@@ -1,6 +1,8 @@
 package manganatoapi
 
-import "github.com/gocolly/colly"
+import (
+	"github.com/gocolly/colly"
+)
 
 var c *colly.Collector
 

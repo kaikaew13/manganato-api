@@ -48,10 +48,12 @@ func TestSearchMangaByID(t *testing.T) {
 		Name         string
 		Author       string
 		Alternatives string
+		Chapters     int
 	}{
 		Name:         "Chainsaw Man",
 		Author:       "Tatsuki Fujimoto",
 		Alternatives: "Chainsawman, チェンソーマン",
+		Chapters:     97,
 	}
 
 	if m.Name != want.Name {
@@ -63,29 +65,8 @@ func TestSearchMangaByID(t *testing.T) {
 	if m.Alternatives != want.Alternatives {
 		t.Errorf("wanted manga with alternatives %s, got %s", want.Alternatives, m.Alternatives)
 	}
-}
-
-func TestCreateChapterList(t *testing.T) {
-	Setup()
-
-	chapters := createChapterList(id)
-
-	want := 97
-
-	if len(chapters) != want {
-		t.Errorf("wanted manga to have %d chapters, got %d", want, len(chapters))
-	}
-}
-
-func TestCreateAuthor(t *testing.T) {
-	Setup()
-
-	a := createAuthor(id)
-
-	want := "Tatsuki Fujimoto"
-
-	if a.Name != want {
-		t.Errorf("wanted author with name %s, got %s", want, a.Name)
+	if len(m.ChapterList) != want.Chapters {
+		t.Errorf("wanted manga to have %d chapters, got %d", want.Chapters, len(m.ChapterList))
 	}
 }
 

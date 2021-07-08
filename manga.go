@@ -28,8 +28,11 @@ func SearchManga(name string) []Manga {
 
 		m.getMangaID(h.ChildAttr("a.item-img", "href"))
 		m.Name = h.ChildText(".item-right a.item-title")
-		m.Author = createAuthor(m.ID)
 		m.Updated = h.ChildText(".item-right span.item-author+span")
+
+		createAuthor(&m)
+
+		h.Request.Visit(specificMangaURL + m.ID)
 
 		mangas = append(mangas, m)
 	})
@@ -64,11 +67,10 @@ func (m *Manga) SearchMangaByID() {
 		m.Views = views
 	})
 
-	m.Author = createAuthor(m.ID)
-	m.ChapterList = createChapterList(m.ID)
+	createChapterList(m)
+	createAuthor(m)
 
 	c.Visit(specificMangaURL + m.ID)
-
 }
 
 func (m *Manga) getMangaID(url string) {

@@ -10,18 +10,16 @@ type Author struct {
 	Mangas []Manga
 }
 
-func createAuthor(mangaId string) Author {
-	a := Author{}
+func createAuthor(m *Manga) {
 
 	c.OnHTML(".variations-tableInfo tr:nth-child(2)", func(h *colly.HTMLElement) {
+		a := Author{}
+
 		a.getAuthorID(h.ChildAttr("a", "href"))
-
 		a.Name = h.ChildText("td.table-value")
+
+		m.Author = a
 	})
-
-	c.Visit(specificMangaURL + mangaId)
-
-	return a
 }
 
 func (a *Author) getAuthorID(url string) {

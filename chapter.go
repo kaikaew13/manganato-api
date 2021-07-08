@@ -14,8 +14,7 @@ type Chapter struct {
 	// Pages
 }
 
-func createChapterList(mangaId string) []Chapter {
-	chapters := []Chapter{}
+func createChapterList(m *Manga) {
 
 	c.OnHTML(".row-content-chapter li.a-h", func(h *colly.HTMLElement) {
 		ch := Chapter{}
@@ -25,13 +24,9 @@ func createChapterList(mangaId string) []Chapter {
 		ch.Views = h.ChildText("span.chapter-view")
 		ch.Uploaded = h.ChildText("span.chapter-time")
 
-		chapters = append(chapters, ch)
+		m.ChapterList = append(m.ChapterList, ch)
 
 	})
-
-	c.Visit(specificMangaURL + mangaId)
-
-	return chapters
 }
 
 func (ch *Chapter) getChapterID(url string) {
