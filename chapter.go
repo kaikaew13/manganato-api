@@ -16,7 +16,6 @@ func createChapterList(id string) []Chapter {
 	chapters := []Chapter{}
 
 	c.OnHTML(".row-content-chapter li.a-h", func(h *colly.HTMLElement) {
-
 		ch := Chapter{}
 
 		ch.getChapterID(h.ChildAttr("a.chapter-name", "href"))

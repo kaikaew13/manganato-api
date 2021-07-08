@@ -30,8 +30,8 @@ func TestSearchManga(t *testing.T) {
 	if mangas[0].Name != want.Name {
 		t.Errorf("wanted manga with name %s, got %s", want.Name, mangas[0].Name)
 	}
-	if mangas[0].Author != want.Author {
-		t.Errorf("wanted manga with author %s, got %s", want.Author, mangas[0].Author)
+	if mangas[0].Author.Name != want.Author {
+		t.Errorf("wanted manga with author %s, got %s", want.Author, mangas[0].Author.Name)
 	}
 }
 
@@ -57,8 +57,8 @@ func TestSearchMangaByID(t *testing.T) {
 	if m.Name != want.Name {
 		t.Errorf("wanted manga with name %s, got %s", want.Name, m.Name)
 	}
-	if m.Author != want.Author {
-		t.Errorf("wanted manga with author %s, got %s", want.Author, m.Author)
+	if m.Author.Name != want.Author {
+		t.Errorf("wanted manga with author %s, got %s", want.Author, m.Author.Name)
 	}
 	if m.Alternatives != want.Alternatives {
 		t.Errorf("wanted manga with alternatives %s, got %s", want.Alternatives, m.Alternatives)
@@ -80,5 +80,11 @@ func TestCreateChapterList(t *testing.T) {
 func TestCreateAuthor(t *testing.T) {
 	Setup()
 
-	createAuthor(id)
+	a := createAuthor(id)
+
+	want := "Tatsuki Fujimoto"
+
+	if a.Name != want {
+		t.Errorf("wanted author with name %s, got %s", want, a.Name)
+	}
 }

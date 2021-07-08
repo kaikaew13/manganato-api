@@ -10,7 +10,7 @@ type Manga struct {
 	ID           string
 	Name         string
 	Alternatives string
-	Author       string
+	Author       Author
 	Status       string
 	Updated      string
 	Views        string
@@ -21,16 +21,14 @@ type Manga struct {
 }
 
 func SearchManga(name string) []Manga {
-
 	mangas := []Manga{}
 
 	c.OnHTML(".search-story-item", func(h *colly.HTMLElement) {
-
 		m := Manga{}
 
 		m.getMangaID(h.ChildAttr("a.item-img", "href"))
 		m.Name = h.ChildText(".item-right a.item-title")
-		m.Author = h.ChildText(".item-right span.item-author")
+		m.Author = createAuthor(m.ID)
 		m.Updated = h.ChildText(".item-right span.item-author+span")
 
 		mangas = append(mangas, m)
@@ -50,12 +48,10 @@ func (m *Manga) SearchMangaByID() {
 
 	c.OnHTML(".variations-tableInfo", func(h *colly.HTMLElement) {
 		alternatives := h.ChildText("tr:nth-child(1) .table-value")
-		author := h.ChildText("tr:nth-child(2) .table-value")
 		status := h.ChildText("tr:nth-child(3) .table-value")
 		genres := h.ChildText("tr:nth-child(4) .table-value")
 
 		m.Alternatives = alternatives
-		m.Author = author
 		m.Status = status
 		m.Genres = genres
 	})
@@ -68,9 +64,11 @@ func (m *Manga) SearchMangaByID() {
 		m.Views = views
 	})
 
+	m.Author = createAuthor(m.ID)
 	m.ChapterList = createChapterList(m.ID)
 
 	c.Visit(specificMangaURL + m.ID)
+
 }
 
 func (m *Manga) getMangaID(url string) {
