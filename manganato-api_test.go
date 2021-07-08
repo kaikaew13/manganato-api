@@ -82,9 +82,23 @@ func TestCreateAuthor(t *testing.T) {
 
 	a := createAuthor(id)
 
-	want := "Tatsuki Fujimo"
+	want := "Tatsuki Fujimoto"
 
 	if a.Name != want {
 		t.Errorf("wanted author with name %s, got %s", want, a.Name)
+	}
+}
+
+func TestGetChapterURL(t *testing.T) {
+	ch := Chapter{
+		ID: "97",
+	}
+
+	url := ch.getChapterURL(id)
+
+	want := specificMangaURL + id + "/chapter-97"
+
+	if url != want {
+		t.Errorf("wanted url string of %s, got %s", want, url)
 	}
 }

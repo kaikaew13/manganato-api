@@ -1,6 +1,8 @@
 package manganatoapi
 
 import (
+	"fmt"
+
 	"github.com/gocolly/colly"
 )
 
@@ -12,7 +14,7 @@ type Chapter struct {
 	// Pages
 }
 
-func createChapterList(id string) []Chapter {
+func createChapterList(mangaId string) []Chapter {
 	chapters := []Chapter{}
 
 	c.OnHTML(".row-content-chapter li.a-h", func(h *colly.HTMLElement) {
@@ -27,11 +29,15 @@ func createChapterList(id string) []Chapter {
 
 	})
 
-	c.Visit(specificMangaURL + id)
+	c.Visit(specificMangaURL + mangaId)
 
 	return chapters
 }
 
 func (ch *Chapter) getChapterID(url string) {
 	ch.ID = getID(url, "-")
+}
+
+func (ch *Chapter) getChapterURL(mangaId string) string {
+	return fmt.Sprintf("%s%s/chapter-%s", specificMangaURL, mangaId, ch.ID)
 }

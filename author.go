@@ -10,7 +10,7 @@ type Author struct {
 	Mangas []Manga
 }
 
-func createAuthor(id string) Author {
+func createAuthor(mangaId string) Author {
 	a := Author{}
 
 	c.OnHTML(".variations-tableInfo tr:nth-child(2)", func(h *colly.HTMLElement) {
@@ -19,7 +19,7 @@ func createAuthor(id string) Author {
 		a.Name = h.ChildText("td.table-value")
 	})
 
-	c.Visit(specificMangaURL + id)
+	c.Visit(specificMangaURL + mangaId)
 
 	return a
 }
