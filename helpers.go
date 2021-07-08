@@ -3,7 +3,8 @@ package manganatoapi
 import "strings"
 
 func getId(s string) string {
-	return strings.Split(s, "-")[1]
+	tmp := strings.Split(s, "-")
+	return tmp[len(tmp)-1]
 }
 
 func changeSpaceToUnderscore(s string) string {
