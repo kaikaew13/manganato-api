@@ -1,7 +1,10 @@
 package manganatoapi
 
 const (
-	baseURL          string = "manganato.com"
-	baseURLWithHTTPS        = "https://" + baseURL
-	searchMangaURL          = baseURLWithHTTPS + "/search/story/"
+	manganatoURL              string = "manganato.com"
+	manganatoURLWithHTTPS            = "https://" + manganatoURL
+	readManganatoURL                 = "read" + manganatoURL
+	readManganatoURLWihtHTTPS        = "https://" + readManganatoURL
+	searchMangaURL                   = manganatoURLWithHTTPS + "/search/story/"
+	specificMangaURL                 = readManganatoURLWihtHTTPS + "/manga-"
 )

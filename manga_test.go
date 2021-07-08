@@ -5,6 +5,8 @@ import (
 )
 
 func TestSearchManga(t *testing.T) {
+	Setup()
+
 	mangaName := "chainsaw man"
 	mangaNameFormatted := changeSpaceToUnderscore(mangaName)
 
@@ -29,5 +31,10 @@ func TestSearchManga(t *testing.T) {
 	if mangas[0].Author != want.Author {
 		t.Errorf("wanted manga with author %s, got %s", want.Author, mangas[0].Author)
 	}
+}
 
+func TestSearchMangaByID(t *testing.T) {
+	Setup()
+
+	SearchMangaByID("dn980422")
 }

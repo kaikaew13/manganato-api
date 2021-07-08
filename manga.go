@@ -1,6 +1,8 @@
 package manganatoapi
 
 import (
+	"fmt"
+
 	"github.com/gocolly/colly"
 )
 
@@ -21,9 +23,6 @@ type Manga struct {
 }
 
 func SearchManga(name string) []Manga {
-	c := colly.NewCollector(
-		colly.AllowedDomains(baseURL),
-	)
 
 	mangas := []Manga{}
 
@@ -44,4 +43,14 @@ func SearchManga(name string) []Manga {
 	c.Visit(searchMangaURL + name)
 
 	return mangas
+}
+
+func SearchMangaByID(id string) {
+
+	c.OnHTML(".story-info-right", func(h *colly.HTMLElement) {
+		name := h.ChildText("h1")
+		fmt.Println(name)
+	})
+
+	c.Visit(specificMangaURL + id)
 }
