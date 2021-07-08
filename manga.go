@@ -42,7 +42,7 @@ func SearchManga(name string) []Manga {
 	return mangas
 }
 
-func (m *Manga) SearchMangaByID() {
+func (m *Manga) OpenMangaByID() {
 
 	c.OnHTML(".story-info-right", func(h *colly.HTMLElement) {
 		name := h.ChildText("h1")

@@ -10,7 +10,7 @@ func TestSearchManga(t *testing.T) {
 	Setup()
 
 	mangaName := "chainsaw man"
-	mangaNameFormatted := changeSpaceToUnderscore(mangaName)
+	mangaNameFormatted := ChangeSpaceToUnderscore(mangaName)
 
 	mangas := SearchManga(mangaNameFormatted)
 
@@ -35,14 +35,14 @@ func TestSearchManga(t *testing.T) {
 	}
 }
 
-func TestSearchMangaByID(t *testing.T) {
+func TestOpenMangaByID(t *testing.T) {
 	Setup()
 
 	m := Manga{
 		ID: id,
 	}
 
-	m.SearchMangaByID()
+	m.OpenMangaByID()
 
 	want := struct {
 		Name         string
@@ -77,10 +77,11 @@ func TestSearchMangaByID(t *testing.T) {
 
 func TestGetChapterURL(t *testing.T) {
 	ch := Chapter{
-		ID: "97",
+		ID:      "97",
+		MangaID: id,
 	}
 
-	url := ch.getChapterURL(id)
+	url := ch.getChapterURL()
 
 	want := specificMangaURL + id + "/chapter-97"
 
@@ -102,10 +103,40 @@ func TestCreatePages(t *testing.T) {
 		FirstPageURL: "https://s51.mkklcdnv6tempv2.com/mangakakalot/i2/ix917953/chapter_97_love_love_chainsaw/1.jpg",
 	}
 
-	if len(pgs) != want.Length {
-		t.Errorf("wanted a chapter with %d pages, got %d", want.Length, len(pgs))
+	comparePagesHelper(t, pgs, want)
+}
+
+func TestOpenChapterByID(t *testing.T) {
+	Setup()
+
+	ch := Chapter{
+		ID:      "97",
+		MangaID: id,
 	}
-	if pgs[0].ImageURL != want.FirstPageURL {
-		t.Errorf("wanted url of the first page to be %s, got %s", want.FirstPageURL, pgs[0].ImageURL)
+
+	ch.OpenChapterByID()
+
+	want := struct {
+		Length       int
+		FirstPageURL string
+	}{
+		Length:       23,
+		FirstPageURL: "https://s51.mkklcdnv6tempv2.com/mangakakalot/i2/ix917953/chapter_97_love_love_chainsaw/1.jpg",
+	}
+
+	comparePagesHelper(t, ch.Pages, want)
+}
+
+func comparePagesHelper(t testing.TB, got []Page, want struct {
+	Length       int
+	FirstPageURL string
+}) {
+	t.Helper()
+
+	if len(got) != want.Length {
+		t.Errorf("wanted a chapter with %d pages, got %d", want.Length, len(got))
+	}
+	if got[0].ImageURL != want.FirstPageURL {
+		t.Errorf("wanted url of the first page to be %s, got %s", want.FirstPageURL, got[0].ImageURL)
 	}
 }

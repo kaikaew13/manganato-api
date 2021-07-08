@@ -31,17 +31,16 @@ func createChapterList(m *Manga) {
 	})
 }
 
-func (ch *Chapter) getChapterPages() {
+func (ch *Chapter) OpenChapterByID() {
 
 	// call createPages() which will do the web scraping
-	ch.Pages = createPages(ch.getChapterURL(ch.MangaID))
-
+	ch.Pages = createPages(ch.getChapterURL())
 }
 
 func (ch *Chapter) getChapterID(url string) {
 	ch.ID = getID(url, "-")
 }
 
-func (ch *Chapter) getChapterURL(mangaId string) string {
-	return fmt.Sprintf("%s%s/chapter-%s", specificMangaURL, mangaId, ch.ID)
+func (ch *Chapter) getChapterURL() string {
+	return fmt.Sprintf("%s%s/chapter-%s", specificMangaURL, ch.MangaID, ch.ID)
 }
