@@ -17,21 +17,22 @@ func createChapterList(id string) []Chapter {
 
 	c.OnHTML(".row-content-chapter li.a-h", func(h *colly.HTMLElement) {
 
-		id := getId(h.ChildAttr("a.chapter-name", "href"))
-		chapterName := h.ChildText("a.chapter-name")
-		views := h.ChildText("span.chapter-view")
-		uploaded := h.ChildText("span.chapter-time")
+		ch := Chapter{}
 
-		chapters = append(chapters, Chapter{
-			ID:          id,
-			ChapterName: chapterName,
-			Views:       views,
-			Uploaded:    uploaded,
-		})
+		ch.getChapterID(h.ChildAttr("a.chapter-name", "href"))
+		ch.ChapterName = h.ChildText("a.chapter-name")
+		ch.Views = h.ChildText("span.chapter-view")
+		ch.Uploaded = h.ChildText("span.chapter-time")
+
+		chapters = append(chapters, ch)
 
 	})
 
 	c.Visit(specificMangaURL + id)
 
 	return chapters
+}
+
+func (ch *Chapter) getChapterID(url string) {
+	ch.ID = getID(url, "-")
 }

@@ -4,6 +4,8 @@ import (
 	"testing"
 )
 
+const id string = "dn980422"
+
 func TestSearchManga(t *testing.T) {
 	Setup()
 
@@ -36,7 +38,11 @@ func TestSearchManga(t *testing.T) {
 func TestSearchMangaByID(t *testing.T) {
 	Setup()
 
-	manga := SearchMangaByID("dn980422")
+	m := Manga{
+		ID: id,
+	}
+
+	m.SearchMangaByID()
 
 	want := struct {
 		Name         string
@@ -48,25 +54,31 @@ func TestSearchMangaByID(t *testing.T) {
 		Alternatives: "Chainsawman, チェンソーマン",
 	}
 
-	if manga.Name != want.Name {
-		t.Errorf("wanted manga with name %s, got %s", want.Name, manga.Name)
+	if m.Name != want.Name {
+		t.Errorf("wanted manga with name %s, got %s", want.Name, m.Name)
 	}
-	if manga.Author != want.Author {
-		t.Errorf("wanted manga with author %s, got %s", want.Author, manga.Author)
+	if m.Author != want.Author {
+		t.Errorf("wanted manga with author %s, got %s", want.Author, m.Author)
 	}
-	if manga.Alternatives != want.Alternatives {
-		t.Errorf("wanted manga with alternatives %s, got %s", want.Alternatives, manga.Alternatives)
+	if m.Alternatives != want.Alternatives {
+		t.Errorf("wanted manga with alternatives %s, got %s", want.Alternatives, m.Alternatives)
 	}
 }
 
 func TestCreateChapterList(t *testing.T) {
 	Setup()
 
-	chapters := createChapterList("dn980422")
+	chapters := createChapterList(id)
 
 	want := 97
 
 	if len(chapters) != want {
 		t.Errorf("wanted manga to have %d chapters, got %d", want, len(chapters))
 	}
+}
+
+func TestCreateAuthor(t *testing.T) {
+	Setup()
+
+	createAuthor(id)
 }

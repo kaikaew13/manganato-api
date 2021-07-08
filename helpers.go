@@ -2,8 +2,8 @@ package manganatoapi
 
 import "strings"
 
-func getId(s string) string {
-	tmp := strings.Split(s, "-")
+func getID(url, sep string) string {
+	tmp := strings.Split(url, sep)
 	return tmp[len(tmp)-1]
 }
 
