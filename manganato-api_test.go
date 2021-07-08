@@ -92,5 +92,20 @@ func TestGetChapterURL(t *testing.T) {
 func TestCreatePages(t *testing.T) {
 	Setup()
 
-	createPages("https://readmanganato.com/manga-dn980422/chapter-97")
+	pgs := createPages("https://readmanganato.com/manga-dn980422/chapter-97")
+
+	want := struct {
+		Length       int
+		FirstPageURL string
+	}{
+		Length:       23,
+		FirstPageURL: "https://s51.mkklcdnv6tempv2.com/mangakakalot/i2/ix917953/chapter_97_love_love_chainsaw/1.jpg",
+	}
+
+	if len(pgs) != want.Length {
+		t.Errorf("wanted a chapter with %d pages, got %d", want.Length, len(pgs))
+	}
+	if pgs[0].ImageURL != want.FirstPageURL {
+		t.Errorf("wanted url of the first page to be %s, got %s", want.FirstPageURL, pgs[0].ImageURL)
+	}
 }
