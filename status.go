@@ -3,6 +3,6 @@ package manganatoapi
 type Status string
 
 const (
-	Ongoing   Status = "ongoing"
-	Completed Status = "completed"
+	ongoing   Status = "ongoing"
+	completed Status = "completed"
 )

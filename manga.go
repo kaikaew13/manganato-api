@@ -1,5 +1,7 @@
 package manganatoapi
 
+import "github.com/gocolly/colly"
+
 type Manga struct {
 	ID           string
 	Name         string
@@ -12,4 +14,12 @@ type Manga struct {
 	Description  string
 	Genres       []Genre
 	ChapterList  []Chapter
+}
+
+func SearchManga(name string) []Manga {
+	c := colly.NewCollector(
+		colly.AllowedDomains(baseURL),
+	)
+
+	c.Visit(baseURLWithHTTPS)
 }
