@@ -82,7 +82,7 @@ func TestCreateAuthor(t *testing.T) {
 
 	a := createAuthor(id)
 
-	want := "Tatsuki Fujimoto"
+	want := "Tatsuki Fujimo"
 
 	if a.Name != want {
 		t.Errorf("wanted author with name %s, got %s", want, a.Name)
