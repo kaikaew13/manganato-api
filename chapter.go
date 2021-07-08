@@ -8,10 +8,11 @@ import (
 
 type Chapter struct {
 	ID          string
+	MangaID     string
 	ChapterName string
 	Views       string
 	Uploaded    string
-	// Pages
+	Pages       []Page
 }
 
 func createChapterList(m *Manga) {
@@ -20,6 +21,7 @@ func createChapterList(m *Manga) {
 		ch := Chapter{}
 
 		ch.getChapterID(h.ChildAttr("a.chapter-name", "href"))
+		ch.MangaID = m.ID
 		ch.ChapterName = h.ChildText("a.chapter-name")
 		ch.Views = h.ChildText("span.chapter-view")
 		ch.Uploaded = h.ChildText("span.chapter-time")
@@ -28,6 +30,12 @@ func createChapterList(m *Manga) {
 
 	})
 }
+
+// func (ch *Chapter) getChapterPages() {
+
+// 	// call createPages() which will do the web scraping
+// 	createPages(ch.getChapterURL(ch.MangaID))
+// }
 
 func (ch *Chapter) getChapterID(url string) {
 	ch.ID = getID(url, "-")

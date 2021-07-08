@@ -49,11 +49,13 @@ func TestSearchMangaByID(t *testing.T) {
 		Author       string
 		Alternatives string
 		Chapters     int
+		MangaID      string
 	}{
 		Name:         "Chainsaw Man",
 		Author:       "Tatsuki Fujimoto",
 		Alternatives: "Chainsawman, チェンソーマン",
 		Chapters:     97,
+		MangaID:      id,
 	}
 
 	if m.Name != want.Name {
@@ -67,6 +69,9 @@ func TestSearchMangaByID(t *testing.T) {
 	}
 	if len(m.ChapterList) != want.Chapters {
 		t.Errorf("wanted manga to have %d chapters, got %d", want.Chapters, len(m.ChapterList))
+	}
+	if m.ChapterList[0].MangaID != want.MangaID {
+		t.Errorf("wanted chapter to be related with manga with id %s, got %s", want.MangaID, m.ChapterList[0].MangaID)
 	}
 }
 
@@ -82,4 +87,10 @@ func TestGetChapterURL(t *testing.T) {
 	if url != want {
 		t.Errorf("wanted url string of %s, got %s", want, url)
 	}
+}
+
+func TestCreatePages(t *testing.T) {
+	Setup()
+
+	createPages("https://readmanganato.com/manga-dn980422/chapter-97")
 }
