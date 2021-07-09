@@ -7,6 +7,6 @@ func getID(url, sep string) string {
 	return tmp[len(tmp)-1]
 }
 
-func ChangeSpaceToUnderscore(s string) string {
+func changeSpaceToUnderscore(s string) string {
 	return strings.Join(strings.Fields(s), "_")
 }

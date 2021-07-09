@@ -10,9 +10,8 @@ func TestSearchManga(t *testing.T) {
 	Setup()
 
 	mangaName := "chainsaw man"
-	mangaNameFormatted := ChangeSpaceToUnderscore(mangaName)
 
-	mangas := SearchManga(mangaNameFormatted)
+	mangas := SearchManga(mangaName)
 
 	want := struct {
 		Length int
@@ -24,6 +23,7 @@ func TestSearchManga(t *testing.T) {
 		Author: "Tatsuki Fujimoto",
 	}
 
+	// to be refactored
 	if len(mangas) != want.Length {
 		t.Errorf("wanted slice of length %d, got %d", want.Length, len(mangas))
 	}
@@ -35,14 +35,10 @@ func TestSearchManga(t *testing.T) {
 	}
 }
 
-func TestOpenMangaByID(t *testing.T) {
+func TestPickManga(t *testing.T) {
 	Setup()
 
-	m := Manga{
-		ID: id,
-	}
-
-	m.OpenMangaByID()
+	m := PickManga(id)
 
 	want := struct {
 		Name         string
@@ -106,15 +102,10 @@ func TestCreatePages(t *testing.T) {
 	comparePagesHelper(t, pgs, want)
 }
 
-func TestOpenChapterByID(t *testing.T) {
+func TestReadMangaChapter(t *testing.T) {
 	Setup()
 
-	ch := Chapter{
-		ID:      "97",
-		MangaID: id,
-	}
-
-	ch.OpenChapterByID()
+	pgs := ReadMangaChapter(id, "97")
 
 	want := struct {
 		Length       int
@@ -124,7 +115,7 @@ func TestOpenChapterByID(t *testing.T) {
 		FirstPageURL: "https://s51.mkklcdnv6tempv2.com/mangakakalot/i2/ix917953/chapter_97_love_love_chainsaw/1.jpg",
 	}
 
-	comparePagesHelper(t, ch.Pages, want)
+	comparePagesHelper(t, pgs, want)
 }
 
 func comparePagesHelper(t testing.TB, got []Page, want struct {

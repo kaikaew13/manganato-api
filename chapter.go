@@ -31,9 +31,7 @@ func createChapterList(m *Manga) {
 	})
 }
 
-func (ch *Chapter) OpenChapterByID() {
-
-	// call createPages() which will do the web scraping
+func (ch *Chapter) getChapterByID() {
 	ch.Pages = createPages(ch.getChapterURL())
 }
 

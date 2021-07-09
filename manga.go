@@ -20,8 +20,8 @@ type Manga struct {
 	ChapterList  []Chapter
 }
 
-func SearchManga(name string) []Manga {
-	mangas := []Manga{}
+func getMangaList(name string) []Manga {
+	mgs := []Manga{}
 
 	c.OnHTML(".search-story-item", func(h *colly.HTMLElement) {
 		m := Manga{}
@@ -34,15 +34,15 @@ func SearchManga(name string) []Manga {
 
 		h.Request.Visit(specificMangaURL + m.ID)
 
-		mangas = append(mangas, m)
+		mgs = append(mgs, m)
 	})
 
 	c.Visit(searchMangaURL + name)
 
-	return mangas
+	return mgs
 }
 
-func (m *Manga) OpenMangaByID() {
+func (m *Manga) getMangaByID() {
 
 	c.OnHTML(".story-info-right", func(h *colly.HTMLElement) {
 		name := h.ChildText("h1")
