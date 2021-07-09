@@ -2,7 +2,7 @@ package manganatoapi
 
 import "errors"
 
-var ErrPageNotFound = errors.New("This page does not exist or has been deleted")
+var ErrPageNotFound = errors.New("this page does not exist or has been deleted")
 
 func SearchManga(name string) (*[]Manga, error) {
 	tmp := getMangaList(changeSpaceToUnderscore(name))
