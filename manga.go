@@ -32,11 +32,15 @@ func getLatestUpdatedManga() []Manga {
 
 	c.OnHTML(".content-homepage-item", func(h *colly.HTMLElement) {
 		m := Manga{}
-		m.getMangaID(h.ChildAttr("div.content-homepage-item-right h3 a", "href"))
-		m.Name = h.ChildText("div.content-homepage-item-right h3 a")
-		m.Author.Name = h.ChildText("div.content-homepage-item-right span.item-author")
+		m.getMangaID(h.ChildAttr(".content-homepage-item-right h3 a", "href"))
+		m.Name = h.ChildText(".content-homepage-item-right h3 a")
+		m.Author.Name = h.ChildText(".content-homepage-item-right .item-author")
 
 		mgs = append(mgs, m)
+	})
+
+	c.OnError(func(r *colly.Response, e error) {
+		fmt.Println("Request URL:", r.Request.URL, "failed with response:", r, "\nError:", e)
 	})
 
 	c.Visit(manganatoURLWithHTTPS)

@@ -209,9 +209,9 @@ func notFoundHelper(t testing.TB, err error) {
 	t.Helper()
 
 	if err == nil {
-		t.Errorf("should have error of type NotFoundError")
+		t.Errorf("should have error of type ErrPageNotFound")
 	}
-	if _, ok := err.(*NotFoundError); !ok {
+	if err != ErrPageNotFound {
 		t.Error(err.Error())
 	}
 }
