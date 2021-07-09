@@ -1,6 +1,7 @@
 package manganatoapi
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/gocolly/colly"
@@ -30,6 +31,10 @@ func getMangaListHelper(url string) []Manga {
 		h.Request.Visit(specificMangaURL + m.ID)
 
 		mgs = append(mgs, m)
+	})
+
+	c.OnError(func(r *colly.Response, e error) {
+		fmt.Println("Request URL:", r.Request.URL, "failed with response:", r, "\nError:", e)
 	})
 
 	c.Visit(url)

@@ -1,6 +1,8 @@
 package manganatoapi
 
 import (
+	"fmt"
+
 	"github.com/gocolly/colly"
 )
 
@@ -35,6 +37,10 @@ func (g *Genre) getMangaListByGenreID() {
 		m.Description = h.ChildText("div.genres-item-description")
 
 		g.Mangas = append(g.Mangas, m)
+	})
+
+	c.OnError(func(r *colly.Response, e error) {
+		fmt.Println("Request URL:", r.Request.URL, "failed with response:", r, "\nError:", e)
 	})
 
 	c.Visit(searchMangaByGenreURL + g.ID)

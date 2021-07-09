@@ -1,6 +1,8 @@
 package manganatoapi
 
 import (
+	"fmt"
+
 	"github.com/gocolly/colly"
 )
 
@@ -19,6 +21,10 @@ func createPages(url string) []Page {
 		p.getPageID(p.ImageURL)
 
 		pgs = append(pgs, p)
+	})
+
+	c.OnError(func(r *colly.Response, e error) {
+		fmt.Println("Request URL:", r.Request.URL, "failed with response:", r, "\nError:", e)
 	})
 
 	c.Visit(url)
