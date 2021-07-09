@@ -13,7 +13,10 @@ func TestSearchManga(t *testing.T) {
 
 	mangaName := "chainsaw man"
 
-	mgs := SearchManga(mangaName)
+	mgs, err := SearchManga(mangaName)
+	if err != nil {
+		t.Error("not expect to have error")
+	}
 
 	want := struct {
 		Length int
@@ -25,15 +28,18 @@ func TestSearchManga(t *testing.T) {
 		Author: "Tatsuki Fujimoto",
 	}
 
-	compareMangasHelper(t, len(mgs), want.Length)
-	compareNameHelper(t, mgs[0].Name, want.Name)
-	compareAuthorHelper(t, mgs[0].Author.Name, want.Author)
+	compareMangasHelper(t, len(*mgs), want.Length)
+	compareNameHelper(t, (*mgs)[0].Name, want.Name)
+	compareAuthorHelper(t, (*mgs)[0].Author.Name, want.Author)
 }
 
 func TestPickManga(t *testing.T) {
 	InitCrawler()
 
-	m := PickManga(id)
+	m, err := PickManga(id)
+	if err != nil {
+		t.Error("not expect to have error")
+	}
 
 	want := struct {
 		Name         string
@@ -64,7 +70,10 @@ func TestPickManga(t *testing.T) {
 func TestReadMangaChapter(t *testing.T) {
 	InitCrawler()
 
-	pgs := ReadMangaChapter(id, "97")
+	pgs, err := ReadMangaChapter(id, "97")
+	if err != nil {
+		t.Error("not expect to have error")
+	}
 
 	want := struct {
 		Length       int
@@ -74,13 +83,16 @@ func TestReadMangaChapter(t *testing.T) {
 		FirstPageURL: "https://s51.mkklcdnv6tempv2.com/mangakakalot/i2/ix917953/chapter_97_love_love_chainsaw/1.jpg",
 	}
 
-	comparePagesHelper(t, pgs, want)
+	comparePagesHelper(t, *pgs, want)
 }
 
 func TestSearchMangaByAuthor(t *testing.T) {
 	InitCrawler()
 
-	mgs := SearchMangaByAuthor("fHx0YXRzdWtpX2Z1amltb3Rv")
+	mgs, err := SearchMangaByAuthor("fHx0YXRzdWtpX2Z1amltb3Rv")
+	if err != nil {
+		t.Error("not expect to have error")
+	}
 
 	want := struct {
 		Length int
@@ -92,15 +104,18 @@ func TestSearchMangaByAuthor(t *testing.T) {
 		Author: "Fujimoto Tatsuki",
 	}
 
-	compareMangasHelper(t, len(mgs), want.Length)
-	compareNameHelper(t, mgs[1].Name, want.Name)
-	compareAuthorHelper(t, mgs[1].Author.Name, want.Author)
+	compareMangasHelper(t, len(*mgs), want.Length)
+	compareNameHelper(t, (*mgs)[1].Name, want.Name)
+	compareAuthorHelper(t, (*mgs)[1].Author.Name, want.Author)
 }
 
 func TestSearchMangaByGenre(t *testing.T) {
 	InitCrawler()
 
-	mgs := SearchMangaByGenre("2")
+	mgs, err := SearchMangaByGenre("2")
+	if err != nil {
+		t.Error("not expect to have error")
+	}
 
 	want := struct {
 		Length int
@@ -108,7 +123,7 @@ func TestSearchMangaByGenre(t *testing.T) {
 		Length: 24,
 	}
 
-	compareMangasHelper(t, len(mgs), want.Length)
+	compareMangasHelper(t, len(*mgs), want.Length)
 }
 
 //
@@ -140,6 +155,48 @@ func TestCreatePages(t *testing.T) {
 	}
 
 	comparePagesHelper(t, pgs, want)
+}
+
+func TestNotFound(t *testing.T) {
+	InitCrawler()
+
+	_, err := SearchManga(" asdlfjas j laja j")
+	notFoundHelper(t, err)
+
+	_, err = PickManga("to70571")
+	notFoundHelper(t, err)
+
+	_, err = ReadMangaChapter("to70571", "1")
+	notFoundHelper(t, err)
+
+	_, err = ReadMangaChapter("to970571", "1000")
+	notFoundHelper(t, err)
+
+	// for https://manganato.com/author/story/ route, short random string does not
+	// result in 404 error, only long strings or string with more than one consecutive
+	// space will result in 404 error
+	// case one: with long string
+	_, err = SearchMangaByAuthor("asldjfsjflsajfljdsafljasdfljafjaslfjsfldsjflsdjfkjflsjljsfjdaflfjjsdaljs")
+	notFoundHelper(t, err)
+
+	// case two: with more than one consecutive space
+	_, err = SearchMangaByAuthor("a  b")
+	notFoundHelper(t, err)
+
+	_, err = SearchMangaByGenre("abc")
+	notFoundHelper(t, err)
+
+}
+
+func notFoundHelper(t testing.TB, err error) {
+	t.Helper()
+
+	if err == nil {
+		t.Errorf("should have error of type NotFoundError")
+	}
+	if _, ok := err.(*NotFoundError); !ok {
+		t.Error(err.Error())
+	}
 }
 
 func compareNameHelper(t testing.TB, got, want string) {

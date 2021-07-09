@@ -2,6 +2,7 @@ package manganatoapi
 
 import (
 	"fmt"
+	"reflect"
 	"strings"
 
 	"github.com/gocolly/colly"
@@ -79,4 +80,8 @@ func (m *Manga) getMangaRating(rating string) {
 
 func (m *Manga) getMangaID(url string) {
 	m.ID = getID(url, "-")
+}
+
+func (m *Manga) compareManga(tmp *Manga) bool {
+	return reflect.DeepEqual(m, tmp)
 }
