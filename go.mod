@@ -1,4 +1,4 @@
-module manganatoapi
+module github.com/kaikaew13/manganato-api
 
 go 1.16
 
