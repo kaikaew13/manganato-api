@@ -1,4 +1,4 @@
-module manganato-api
+module manganatoapi
 
 go 1.16
 
