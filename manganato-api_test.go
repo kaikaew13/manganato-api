@@ -126,6 +126,23 @@ func TestSearchMangaByGenre(t *testing.T) {
 	compareMangasHelper(t, len(*mgs), want.Length)
 }
 
+func TestSearchTopManga(t *testing.T) {
+	InitCrawler()
+
+	mgs, err := SearchLatestUpdatedManga()
+	if err != nil {
+		t.Errorf("not expect to have error: %s", err.Error())
+	}
+
+	want := struct {
+		Length int
+	}{
+		Length: 56,
+	}
+
+	compareMangasHelper(t, len(*mgs), want.Length)
+}
+
 //
 
 func TestGetChapterURL(t *testing.T) {

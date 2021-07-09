@@ -27,6 +27,23 @@ func getMangaList(name string) []Manga {
 	return getMangaListHelper(url)
 }
 
+func getLatestUpdatedManga() []Manga {
+	mgs := []Manga{}
+
+	c.OnHTML(".content-homepage-item", func(h *colly.HTMLElement) {
+		m := Manga{}
+		m.getMangaID(h.ChildAttr("div.content-homepage-item-right h3 a", "href"))
+		m.Name = h.ChildText("div.content-homepage-item-right h3 a")
+		m.Author.Name = h.ChildText("div.content-homepage-item-right span.item-author")
+
+		mgs = append(mgs, m)
+	})
+
+	c.Visit(manganatoURLWithHTTPS)
+
+	return mgs
+}
+
 func (m *Manga) getMangaByID() {
 
 	c.OnHTML(".story-info-right", func(h *colly.HTMLElement) {

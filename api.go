@@ -67,3 +67,13 @@ func SearchMangaByGenre(genreId string) (*[]Manga, error) {
 
 	return &g.Mangas, nil
 }
+
+func SearchLatestUpdatedManga() (*[]Manga, error) {
+	tmp := getLatestUpdatedManga()
+
+	if len(tmp) == 0 {
+		return nil, newNotFoundError()
+	}
+
+	return &tmp, nil
+}

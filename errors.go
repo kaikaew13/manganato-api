@@ -1,6 +1,10 @@
 package manganatoapi
 
-import "net/http"
+import (
+	"fmt"
+	"net/http"
+	"strconv"
+)
 
 type NotFoundError struct {
 	msg        string
@@ -15,7 +19,7 @@ func newNotFoundError() *NotFoundError {
 }
 
 func (e *NotFoundError) Error() string {
-	return e.msg
+	return fmt.Sprintf("%s: %s", strconv.Itoa(e.getStatusCode()), e.msg)
 }
 
 func (e *NotFoundError) getStatusCode() int {
