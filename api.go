@@ -34,3 +34,13 @@ func SearchMangaByAuthor(authorId string) []Manga {
 
 	return a.Mangas
 }
+
+func SearchMangaByGenre(genreId string) []Manga {
+	g := Genre{
+		ID: genreId,
+	}
+
+	g.getMangaListByGenreID()
+
+	return g.Mangas
+}

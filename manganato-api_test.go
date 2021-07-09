@@ -97,6 +97,20 @@ func TestSearchMangaByAuthor(t *testing.T) {
 	compareAuthorHelper(t, mgs[1].Author.Name, want.Author)
 }
 
+func TestSearchMangaByGenre(t *testing.T) {
+	InitCrawler()
+
+	mgs := SearchMangaByGenre("2")
+
+	want := struct {
+		Length int
+	}{
+		Length: 24,
+	}
+
+	compareMangasHelper(t, len(mgs), want.Length)
+}
+
 //
 
 func TestGetChapterURL(t *testing.T) {

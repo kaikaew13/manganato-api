@@ -8,4 +8,5 @@ const (
 	searchMangaURL                   = manganatoURLWithHTTPS + "/search/story/"
 	specificMangaURL                 = readManganatoURLWihtHTTPS + "/manga-"
 	searchMangaByAuthorURL           = manganatoURLWithHTTPS + "/author/story/"
+	searchMangaByGenreURL            = manganatoURLWithHTTPS + "/genre-"
 )
