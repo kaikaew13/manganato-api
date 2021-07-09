@@ -6,8 +6,6 @@ import (
 	"github.com/gocolly/colly"
 )
 
-const ()
-
 type Manga struct {
 	ID           string
 	Name         string
@@ -23,25 +21,8 @@ type Manga struct {
 }
 
 func getMangaList(name string) []Manga {
-	mgs := []Manga{}
-
-	c.OnHTML(".search-story-item", func(h *colly.HTMLElement) {
-		m := Manga{}
-
-		m.getMangaID(h.ChildAttr("a.item-img", "href"))
-		m.Name = h.ChildText(".item-right a.item-title")
-		m.Updated = h.ChildText(".item-right span.item-author+span")
-
-		createAuthor(&m)
-
-		h.Request.Visit(specificMangaURL + m.ID)
-
-		mgs = append(mgs, m)
-	})
-
-	c.Visit(searchMangaURL + name)
-
-	return mgs
+	url := searchMangaURL + name
+	return getMangaListHelper(url)
 }
 
 func (m *Manga) getMangaByID() {

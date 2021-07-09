@@ -24,3 +24,13 @@ func ReadMangaChapter(mangaId, chapterId string) []Page {
 
 	return ch.Pages
 }
+
+func SearchMangaByAuthor(authorId string) []Manga {
+	a := Author{
+		ID: authorId,
+	}
+
+	a.getMangaListByAuthorID()
+
+	return a.Mangas
+}

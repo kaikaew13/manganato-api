@@ -22,6 +22,11 @@ func createAuthor(m *Manga) {
 	})
 }
 
+func (a *Author) getMangaListByAuthorID() {
+	url := searchMangaByAuthorURL + a.ID
+	a.Mangas = getMangaListHelper(url)
+}
+
 func (a *Author) getAuthorID(url string) {
 	a.ID = getID(url, "/")
 }

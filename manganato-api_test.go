@@ -6,6 +6,8 @@ import (
 
 const id string = "dn980422"
 
+// testing main apis
+
 func TestSearchManga(t *testing.T) {
 	InitCrawler()
 
@@ -74,6 +76,28 @@ func TestReadMangaChapter(t *testing.T) {
 
 	comparePagesHelper(t, pgs, want)
 }
+
+func TestSearchMangaByAuthor(t *testing.T) {
+	InitCrawler()
+
+	mgs := SearchMangaByAuthor("fHx0YXRzdWtpX2Z1amltb3Rv")
+
+	want := struct {
+		Length int
+		Name   string
+		Author string
+	}{
+		Length: 7,
+		Name:   "Fire Punch",
+		Author: "Fujimoto Tatsuki",
+	}
+
+	compareMangasHelper(t, len(mgs), want.Length)
+	compareNameHelper(t, mgs[1].Name, want.Name)
+	compareAuthorHelper(t, mgs[1].Author.Name, want.Author)
+}
+
+//
 
 func TestGetChapterURL(t *testing.T) {
 	ch := Chapter{
