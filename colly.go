@@ -6,7 +6,7 @@ import (
 
 var c *colly.Collector
 
-func Setup() {
+func InitCrawler() {
 	c = colly.NewCollector(
 		colly.AllowedDomains(
 			manganatoURL,
