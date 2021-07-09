@@ -1,6 +1,8 @@
 package manganatoapi
 
 import (
+	"strings"
+
 	"github.com/gocolly/colly"
 )
 
@@ -14,7 +16,7 @@ type Manga struct {
 	Status       string
 	Updated      string
 	Views        string
-	Rating       Rating
+	Rating       string
 	Description  string
 	Genres       string
 	ChapterList  []Chapter
@@ -62,15 +64,32 @@ func (m *Manga) getMangaByID() {
 	c.OnHTML(".story-info-right-extent", func(h *colly.HTMLElement) {
 		updated := h.ChildText("p:nth-child(1) .stre-value")
 		views := h.ChildText("p:nth-child(2) .stre-value")
+		m.getMangaRating(h.ChildText("em#rate_row_cmd"))
 
 		m.Updated = updated
 		m.Views = views
+	})
+
+	c.OnHTML(".panel-story-info-description", func(h *colly.HTMLElement) {
+		m.getMangaDescription(h.Text)
 	})
 
 	createChapterList(m)
 	createAuthor(m)
 
 	c.Visit(specificMangaURL + m.ID)
+}
+
+func (m *Manga) getMangaDescription(desc string) {
+	pref := "Description :\n"
+
+	desc = strings.Trim(desc, "\n")
+	m.Description = strings.TrimPrefix(desc, pref)
+}
+
+func (m *Manga) getMangaRating(rating string) {
+	tmp := (strings.Fields(rating))[3:]
+	m.Rating = strings.Join(tmp, " ")
 }
 
 func (m *Manga) getMangaID(url string) {
