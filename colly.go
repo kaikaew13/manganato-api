@@ -12,5 +12,6 @@ func InitCrawler() {
 			manganatoURL,
 			readManganatoURL,
 		),
+		colly.MaxDepth(2),
 	)
 }

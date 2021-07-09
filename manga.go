@@ -16,7 +16,7 @@ type Manga struct {
 	Views        string
 	Rating       string
 	Description  string
-	Genres       string
+	Genres       []Genre
 	ChapterList  []Chapter
 }
 
@@ -35,11 +35,11 @@ func (m *Manga) getMangaByID() {
 	c.OnHTML(".variations-tableInfo", func(h *colly.HTMLElement) {
 		alternatives := h.ChildText("tr:nth-child(1) .table-value")
 		status := h.ChildText("tr:nth-child(3) .table-value")
-		genres := h.ChildText("tr:nth-child(4) .table-value")
+		// genres := h.ChildText("tr:nth-child(4) .table-value")
 
 		m.Alternatives = alternatives
 		m.Status = status
-		m.Genres = genres
+		// m.Genres = genres
 	})
 
 	c.OnHTML(".story-info-right-extent", func(h *colly.HTMLElement) {
@@ -55,6 +55,7 @@ func (m *Manga) getMangaByID() {
 		m.getMangaDescription(h.Text)
 	})
 
+	createGenreList(m)
 	createChapterList(m)
 	createAuthor(m)
 
