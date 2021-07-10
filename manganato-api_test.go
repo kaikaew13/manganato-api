@@ -9,11 +9,11 @@ const id string = "dn980422"
 // testing main apis
 
 func TestSearchManga(t *testing.T) {
-	InitCrawler()
+	s := NewSearcher()
 
 	mangaName := "chainsaw man"
 
-	mgs, err := SearchManga(mangaName)
+	mgs, err := s.SearchManga(mangaName)
 	if err != nil {
 		t.Error("not expect to have error")
 	}
@@ -34,9 +34,9 @@ func TestSearchManga(t *testing.T) {
 }
 
 func TestPickManga(t *testing.T) {
-	InitCrawler()
+	s := NewSearcher()
 
-	m, err := PickManga(id)
+	m, err := s.PickManga(id)
 	if err != nil {
 		t.Error("not expect to have error")
 	}
@@ -68,9 +68,9 @@ func TestPickManga(t *testing.T) {
 }
 
 func TestReadMangaChapter(t *testing.T) {
-	InitCrawler()
+	s := NewSearcher()
 
-	pgs, err := ReadMangaChapter(id, "97")
+	pgs, err := s.ReadMangaChapter(id, "97")
 	if err != nil {
 		t.Error("not expect to have error")
 	}
@@ -87,9 +87,9 @@ func TestReadMangaChapter(t *testing.T) {
 }
 
 func TestSearchMangaByAuthor(t *testing.T) {
-	InitCrawler()
+	s := NewSearcher()
 
-	mgs, err := SearchMangaByAuthor("fHx0YXRzdWtpX2Z1amltb3Rv")
+	mgs, err := s.SearchMangaByAuthor("fHx0YXRzdWtpX2Z1amltb3Rv")
 	if err != nil {
 		t.Error("not expect to have error")
 	}
@@ -110,9 +110,9 @@ func TestSearchMangaByAuthor(t *testing.T) {
 }
 
 func TestSearchMangaByGenre(t *testing.T) {
-	InitCrawler()
+	s := NewSearcher()
 
-	mgs, err := SearchMangaByGenre("2")
+	mgs, err := s.SearchMangaByGenre("2")
 	if err != nil {
 		t.Error("not expect to have error")
 	}
@@ -127,9 +127,9 @@ func TestSearchMangaByGenre(t *testing.T) {
 }
 
 func TestSearchTopManga(t *testing.T) {
-	InitCrawler()
+	s := NewSearcher()
 
-	mgs, err := SearchLatestUpdatedManga()
+	mgs, err := s.SearchLatestUpdatedManga()
 	if err != nil {
 		t.Errorf("not expect to have error: %s", err.Error())
 	}
@@ -159,7 +159,7 @@ func TestGetChapterURL(t *testing.T) {
 }
 
 func TestCreatePages(t *testing.T) {
-	InitCrawler()
+	NewSearcher()
 
 	pgs := createPages("https://readmanganato.com/manga-dn980422/chapter-97")
 
@@ -175,32 +175,32 @@ func TestCreatePages(t *testing.T) {
 }
 
 func TestNotFound(t *testing.T) {
-	InitCrawler()
+	s := NewSearcher()
 
-	_, err := SearchManga(" asdlfjas j laja j")
+	_, err := s.SearchManga(" asdlfjas j laja j")
 	notFoundHelper(t, err)
 
-	_, err = PickManga("to70571")
+	_, err = s.PickManga("to70571")
 	notFoundHelper(t, err)
 
-	_, err = ReadMangaChapter("to70571", "1")
+	_, err = s.ReadMangaChapter("to70571", "1")
 	notFoundHelper(t, err)
 
-	_, err = ReadMangaChapter("to970571", "1000")
+	_, err = s.ReadMangaChapter("to970571", "1000")
 	notFoundHelper(t, err)
 
 	// for https://manganato.com/author/story/ route, short random string does not
 	// result in 404 error, only long strings or string with more than one consecutive
 	// space will result in 404 error
 	// case one: with long string
-	_, err = SearchMangaByAuthor("asldjfsjflsajfljdsafljasdfljafjaslfjsfldsjflsdjfkjflsjljsfjdaflfjjsdaljs")
+	_, err = s.SearchMangaByAuthor("asldjfsjflsajfljdsafljasdfljafjaslfjsfldsjflsdjfkjflsjljsfjdaflfjjsdaljs")
 	notFoundHelper(t, err)
 
 	// case two: with more than one consecutive space
-	_, err = SearchMangaByAuthor("a  b")
+	_, err = s.SearchMangaByAuthor("a  b")
 	notFoundHelper(t, err)
 
-	_, err = SearchMangaByGenre("abc")
+	_, err = s.SearchMangaByGenre("abc")
 	notFoundHelper(t, err)
 
 }

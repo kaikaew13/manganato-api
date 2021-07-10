@@ -1,10 +1,36 @@
 package manganatoapi
 
-import "errors"
+import (
+	"errors"
+
+	"github.com/gocolly/colly"
+)
 
 var ErrPageNotFound = errors.New("this page does not exist or has been deleted")
 
-func SearchManga(name string) (*[]Manga, error) {
+var c *colly.Collector
+
+type Searcher struct {
+	MethodsDescription map[string]string
+}
+
+func NewSearcher() Searcher {
+	c = colly.NewCollector(
+		colly.AllowedDomains(
+			manganatoURL,
+			readManganatoURL,
+		),
+		colly.MaxDepth(2),
+	)
+
+	methodDescription := make(map[string]string)
+
+	return Searcher{
+		MethodsDescription: methodDescription,
+	}
+}
+
+func (s *Searcher) SearchManga(name string) (*[]Manga, error) {
 	tmp := getMangaList(changeSpaceToUnderscore(name))
 
 	if len(tmp) == 0 {
@@ -14,7 +40,7 @@ func SearchManga(name string) (*[]Manga, error) {
 	return &tmp, nil
 }
 
-func PickManga(id string) (*Manga, error) {
+func (s *Searcher) PickManga(id string) (*Manga, error) {
 	m := Manga{
 		ID: id,
 	}
@@ -29,7 +55,7 @@ func PickManga(id string) (*Manga, error) {
 	return &m, nil
 }
 
-func ReadMangaChapter(mangaId, chapterId string) (*[]Page, error) {
+func (s *Searcher) ReadMangaChapter(mangaId, chapterId string) (*[]Page, error) {
 	ch := Chapter{
 		ID:      chapterId,
 		MangaID: mangaId,
@@ -44,7 +70,7 @@ func ReadMangaChapter(mangaId, chapterId string) (*[]Page, error) {
 	return &ch.Pages, nil
 }
 
-func SearchMangaByAuthor(authorId string) (*[]Manga, error) {
+func (s *Searcher) SearchMangaByAuthor(authorId string) (*[]Manga, error) {
 	a := Author{
 		ID: authorId,
 	}
@@ -58,7 +84,7 @@ func SearchMangaByAuthor(authorId string) (*[]Manga, error) {
 	return &a.Mangas, nil
 }
 
-func SearchMangaByGenre(genreId string) (*[]Manga, error) {
+func (s *Searcher) SearchMangaByGenre(genreId string) (*[]Manga, error) {
 	g := Genre{
 		ID: genreId,
 	}
@@ -72,7 +98,7 @@ func SearchMangaByGenre(genreId string) (*[]Manga, error) {
 	return &g.Mangas, nil
 }
 
-func SearchLatestUpdatedManga() (*[]Manga, error) {
+func (s *Searcher) SearchLatestUpdatedManga() (*[]Manga, error) {
 	tmp := getLatestUpdatedManga()
 
 	if len(tmp) == 0 {
