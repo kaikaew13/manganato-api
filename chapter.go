@@ -20,7 +20,7 @@ func createChapterList(m *Manga) {
 	c.OnHTML(".row-content-chapter li.a-h", func(h *colly.HTMLElement) {
 		ch := Chapter{}
 
-		ch.getChapterID(h.ChildAttr("a.chapter-name", "href"))
+		ch.getID(h.ChildAttr("a.chapter-name", "href"))
 		ch.MangaID = m.ID
 		ch.ChapterName = h.ChildText("a.chapter-name")
 		ch.Views = h.ChildText("span.chapter-view")
@@ -35,7 +35,7 @@ func (ch *Chapter) getChapterByID() {
 	ch.Pages = createPages(ch.getChapterURL())
 }
 
-func (ch *Chapter) getChapterID(url string) {
+func (ch *Chapter) getID(url string) {
 	ch.ID = getID(url, "-")
 }
 

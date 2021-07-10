@@ -32,7 +32,7 @@ func getLatestUpdatedManga() []Manga {
 
 	c.OnHTML(".content-homepage-item", func(h *colly.HTMLElement) {
 		m := Manga{}
-		m.getMangaID(h.ChildAttr(".content-homepage-item-right h3 a", "href"))
+		m.getID(h.ChildAttr(".content-homepage-item-right h3 a", "href"))
 		m.Name = h.ChildText(".content-homepage-item-right h3 a")
 		m.Author.Name = h.ChildText(".content-homepage-item-right .item-author")
 
@@ -99,7 +99,7 @@ func (m *Manga) getMangaRating(rating string) {
 	m.Rating = strings.Join(tmp, " ")
 }
 
-func (m *Manga) getMangaID(url string) {
+func (m *Manga) getID(url string) {
 	m.ID = getID(url, "-")
 }
 

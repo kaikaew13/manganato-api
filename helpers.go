@@ -22,7 +22,7 @@ func getMangaListHelper(url string) []Manga {
 	c.OnHTML(".search-story-item", func(h *colly.HTMLElement) {
 		m := Manga{}
 
-		m.getMangaID(h.ChildAttr("a.item-img", "href"))
+		m.getID(h.ChildAttr("a.item-img", "href"))
 		m.Name = h.ChildText(".item-right a.item-title")
 		m.Updated = h.ChildText(".item-right span.item-author+span")
 

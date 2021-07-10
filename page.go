@@ -18,7 +18,7 @@ func createPages(url string) []Page {
 		p := Page{}
 
 		p.ImageURL = h.Attr("src")
-		p.getPageID(p.ImageURL)
+		p.getID(p.ImageURL)
 
 		pgs = append(pgs, p)
 	})
@@ -32,7 +32,7 @@ func createPages(url string) []Page {
 	return pgs
 }
 
-func (p *Page) getPageID(url string) {
+func (p *Page) getID(url string) {
 	tmp := getID(url, "/")
 	p.ID = tmp[:len(tmp)-4]
 }

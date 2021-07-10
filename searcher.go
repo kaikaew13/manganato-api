@@ -14,6 +14,10 @@ type Searcher struct {
 	MethodsDescription map[string]string
 }
 
+type Searchable interface {
+	getID(string)
+}
+
 func NewSearcher() Searcher {
 	c = colly.NewCollector(
 		colly.AllowedDomains(
@@ -23,6 +27,7 @@ func NewSearcher() Searcher {
 		colly.MaxDepth(2),
 	)
 
+	// description of each methods are to be added
 	methodDescription := make(map[string]string)
 
 	return Searcher{
