@@ -75,7 +75,7 @@ func (s *Searcher) ReadMangaChapter(mangaId, chapterId string) (*[]Page, error) 
 	return &ch.Pages, nil
 }
 
-func (s *Searcher) SearchMangaByAuthor(authorId string) (*[]Manga, error) {
+func (s *Searcher) PickAuthor(authorId string) (*[]Manga, error) {
 	a := Author{
 		ID: authorId,
 	}
@@ -89,7 +89,7 @@ func (s *Searcher) SearchMangaByAuthor(authorId string) (*[]Manga, error) {
 	return &a.Mangas, nil
 }
 
-func (s *Searcher) SearchMangaByGenre(genreId string) (*[]Manga, error) {
+func (s *Searcher) PickGenre(genreId string) (*[]Manga, error) {
 	g := Genre{
 		ID: genreId,
 	}

@@ -89,7 +89,7 @@ func TestReadMangaChapter(t *testing.T) {
 func TestSearchMangaByAuthor(t *testing.T) {
 	s := NewSearcher()
 
-	mgs, err := s.SearchMangaByAuthor("fHx0YXRzdWtpX2Z1amltb3Rv")
+	mgs, err := s.PickAuthor("fHx0YXRzdWtpX2Z1amltb3Rv")
 	if err != nil {
 		t.Error("not expect to have error")
 	}
@@ -112,7 +112,7 @@ func TestSearchMangaByAuthor(t *testing.T) {
 func TestSearchMangaByGenre(t *testing.T) {
 	s := NewSearcher()
 
-	mgs, err := s.SearchMangaByGenre("2")
+	mgs, err := s.PickGenre("2")
 	if err != nil {
 		t.Error("not expect to have error")
 	}
@@ -162,14 +162,14 @@ func TestNotFound(t *testing.T) {
 	// result in 404 error, only long strings or string with more than one consecutive
 	// space will result in 404 error
 	// case one: with long string
-	_, err = s.SearchMangaByAuthor("asldjfsjflsajfljdsafljasdfljafjaslfjsfldsjflsdjfkjflsjljsfjdaflfjjsdaljs")
+	_, err = s.PickAuthor("asldjfsjflsajfljdsafljasdfljafjaslfjsfldsjflsdjfkjflsjljsfjdaflfjjsdaljs")
 	notFoundHelper(t, err)
 
 	// case two: with more than one consecutive space
-	_, err = s.SearchMangaByAuthor("a  b")
+	_, err = s.PickAuthor("a  b")
 	notFoundHelper(t, err)
 
-	_, err = s.SearchMangaByGenre("abc")
+	_, err = s.PickGenre("abc")
 	notFoundHelper(t, err)
 
 }
