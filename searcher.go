@@ -112,3 +112,11 @@ func (s *Searcher) SearchLatestUpdatedManga() (*[]Manga, error) {
 
 	return &tmp, nil
 }
+
+func (s *Searcher) IsSearchable(any interface{}) bool {
+	switch any.(type) {
+	case Searchable:
+		return true
+	}
+	return false
+}

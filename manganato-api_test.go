@@ -143,37 +143,6 @@ func TestSearchTopManga(t *testing.T) {
 	compareMangasHelper(t, len(*mgs), want.Length)
 }
 
-//
-
-func TestGetChapterURL(t *testing.T) {
-	ch := Chapter{
-		ID:      "97",
-		MangaID: id,
-	}
-
-	url := ch.getChapterURL()
-
-	want := specificMangaURL + id + "/chapter-97"
-
-	compareURLHelper(t, url, want)
-}
-
-func TestCreatePages(t *testing.T) {
-	NewSearcher()
-
-	pgs := createPages("https://readmanganato.com/manga-dn980422/chapter-97")
-
-	want := struct {
-		Length       int
-		FirstPageURL string
-	}{
-		Length:       23,
-		FirstPageURL: "https://s51.mkklcdnv6tempv2.com/mangakakalot/i2/ix917953/chapter_97_love_love_chainsaw/1.jpg",
-	}
-
-	comparePagesHelper(t, pgs, want)
-}
-
 func TestNotFound(t *testing.T) {
 	s := NewSearcher()
 
@@ -203,6 +172,53 @@ func TestNotFound(t *testing.T) {
 	_, err = s.SearchMangaByGenre("abc")
 	notFoundHelper(t, err)
 
+}
+
+func TestIsSearchable(t *testing.T) {
+	s := NewSearcher()
+
+	got := s.IsSearchable(1)
+	want := false
+	compareIsSearchableHelper(t, got, want)
+
+	got = s.IsSearchable(&Manga{})
+	want = true
+	compareIsSearchableHelper(t, got, want)
+
+	got = s.IsSearchable(&Author{})
+	want = true
+	compareIsSearchableHelper(t, got, want)
+}
+
+//
+
+func TestGetChapterURL(t *testing.T) {
+	ch := Chapter{
+		ID:      "97",
+		MangaID: id,
+	}
+
+	url := ch.getChapterURL()
+
+	want := specificMangaURL + id + "/chapter-97"
+
+	compareURLHelper(t, url, want)
+}
+
+func TestCreatePages(t *testing.T) {
+	NewSearcher()
+
+	pgs := createPages("https://readmanganato.com/manga-dn980422/chapter-97")
+
+	want := struct {
+		Length       int
+		FirstPageURL string
+	}{
+		Length:       23,
+		FirstPageURL: "https://s51.mkklcdnv6tempv2.com/mangakakalot/i2/ix917953/chapter_97_love_love_chainsaw/1.jpg",
+	}
+
+	comparePagesHelper(t, pgs, want)
 }
 
 func notFoundHelper(t testing.TB, err error) {
@@ -280,4 +296,12 @@ func comparePagesHelper(t testing.TB, got []Page, want struct {
 		t.Errorf("wanted a chapter with %d pages, got %d", want.Length, len(got))
 	}
 	compareURLHelper(t, got[0].ImageURL, want.FirstPageURL)
+}
+
+func compareIsSearchableHelper(t testing.TB, got, want bool) {
+	t.Helper()
+
+	if got != want {
+		t.Errorf("wanted %t, got %t", want, got)
+	}
 }
