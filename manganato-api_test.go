@@ -58,7 +58,7 @@ func TestPickManga(t *testing.T) {
 	compareNameHelper(t, m.Name, want.Name)
 	compareAuthorHelper(t, m.Author.Name, want.Author)
 	compareAlternativesHelper(t, m.Alternatives, want.Alternatives)
-	compareChaptersHelper(t, m.ChapterList, struct {
+	compareChaptersHelper(t, m.Chapters, struct {
 		Length  int
 		MangaID string
 	}{

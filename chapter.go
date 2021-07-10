@@ -26,7 +26,7 @@ func createChapterList(m *Manga) {
 		ch.Views = h.ChildText("span.chapter-view")
 		ch.Uploaded = h.ChildText("span.chapter-time")
 
-		m.ChapterList = append(m.ChapterList, ch)
+		m.Chapters = append(m.Chapters, ch)
 
 	})
 }

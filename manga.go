@@ -19,7 +19,7 @@ type Manga struct {
 	Rating       string
 	Description  string
 	Genres       []Genre
-	ChapterList  []Chapter
+	Chapters     []Chapter
 }
 
 func getMangaList(name string) []Manga {
