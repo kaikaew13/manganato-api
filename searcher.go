@@ -18,7 +18,7 @@ type Searchable interface {
 	getID(string)
 }
 
-func NewSearcher() Searcher {
+func initCrawler() {
 	c = colly.NewCollector(
 		colly.AllowedDomains(
 			manganatoURL,
@@ -26,6 +26,9 @@ func NewSearcher() Searcher {
 		),
 		colly.MaxDepth(2),
 	)
+}
+
+func NewSearcher() Searcher {
 
 	// description of each methods are to be added
 	methodDescription := make(map[string]string)
@@ -36,6 +39,8 @@ func NewSearcher() Searcher {
 }
 
 func (s *Searcher) SearchManga(name string) (*[]Manga, error) {
+	initCrawler()
+
 	tmp := getMangaList(changeSpaceToUnderscore(name))
 
 	if len(tmp) == 0 {
@@ -46,6 +51,8 @@ func (s *Searcher) SearchManga(name string) (*[]Manga, error) {
 }
 
 func (s *Searcher) PickManga(id string) (*Manga, error) {
+	initCrawler()
+
 	m := Manga{
 		ID: id,
 	}
@@ -61,6 +68,8 @@ func (s *Searcher) PickManga(id string) (*Manga, error) {
 }
 
 func (s *Searcher) ReadMangaChapter(mangaId, chapterId string) (*[]Page, error) {
+	initCrawler()
+
 	ch := Chapter{
 		ID:      chapterId,
 		MangaID: mangaId,
@@ -76,6 +85,8 @@ func (s *Searcher) ReadMangaChapter(mangaId, chapterId string) (*[]Page, error) 
 }
 
 func (s *Searcher) PickAuthor(authorId string) (*[]Manga, error) {
+	initCrawler()
+
 	a := Author{
 		ID: authorId,
 	}
@@ -90,6 +101,8 @@ func (s *Searcher) PickAuthor(authorId string) (*[]Manga, error) {
 }
 
 func (s *Searcher) PickGenre(genreId string) (*[]Manga, error) {
+	initCrawler()
+
 	g := Genre{
 		ID: genreId,
 	}
@@ -104,6 +117,8 @@ func (s *Searcher) PickGenre(genreId string) (*[]Manga, error) {
 }
 
 func (s *Searcher) SearchLatestUpdatedManga() (*[]Manga, error) {
+	initCrawler()
+
 	tmp := getLatestUpdatedManga()
 
 	if len(tmp) == 0 {

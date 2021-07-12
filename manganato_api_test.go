@@ -36,9 +36,14 @@ func TestSearchManga(t *testing.T) {
 func TestPickManga(t *testing.T) {
 	s := NewSearcher()
 
-	m, err := s.PickManga(id)
+	_, err := s.PickManga(id)
 	if err != nil {
 		t.Error("not expect to have error")
+	}
+
+	m, err := s.PickManga(id)
+	if err != nil {
+		t.Error("Bruh...")
 	}
 
 	want := struct {
