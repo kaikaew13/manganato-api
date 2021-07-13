@@ -44,6 +44,7 @@ func getLatestUpdatedManga() []Manga {
 	})
 
 	c.Visit(manganatoURLWithHTTPS)
+	c.Wait()
 
 	return mgs
 }
@@ -64,6 +65,7 @@ func (m *Manga) getMangaByID() {
 	})
 
 	c.OnHTML(".story-info-right-extent", func(h *colly.HTMLElement) {
+
 		updated := h.ChildText("p:nth-child(1) .stre-value")
 		views := h.ChildText("p:nth-child(2) .stre-value")
 		m.getMangaRating(h.ChildText("em#rate_row_cmd"))
@@ -78,13 +80,14 @@ func (m *Manga) getMangaByID() {
 
 	createGenreList(m)
 	createChapterList(m)
-	createAuthor(m)
+	createAuthor(m, c)
 
 	c.OnError(func(r *colly.Response, e error) {
 		fmt.Println("Request URL:", r.Request.URL, "failed with response:", r, "\nError:", e)
 	})
 
 	c.Visit(specificMangaURL + m.ID)
+	c.Wait()
 }
 
 func (m *Manga) getMangaDescription(desc string) {

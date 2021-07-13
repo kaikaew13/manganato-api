@@ -2,8 +2,10 @@ package manganatoapi
 
 import (
 	"errors"
+	"sync"
 
 	"github.com/gocolly/colly"
+	"github.com/gocolly/colly/extensions"
 )
 
 var ErrPageNotFound = errors.New("this page does not exist or has been deleted")
@@ -25,7 +27,21 @@ func initCrawler() {
 			readManganatoURL,
 		),
 		colly.MaxDepth(2),
+		colly.Async(true),
+		// colly.Debugger(&debug.LogDebugger{}),
 	)
+
+	extensions.RandomUserAgent(c)
+}
+
+func cloneCrawler() *colly.Collector {
+	c2 := c.Clone()
+	extensions.RandomUserAgent(c2)
+	return c2
+}
+
+func deleteCrawler() {
+	c = nil
 }
 
 func NewSearcher() Searcher {
@@ -40,6 +56,7 @@ func NewSearcher() Searcher {
 
 func (s *Searcher) SearchManga(name string) (*[]Manga, error) {
 	initCrawler()
+	defer deleteCrawler()
 
 	tmp := getMangaList(changeSpaceToUnderscore(name))
 
@@ -47,11 +64,30 @@ func (s *Searcher) SearchManga(name string) (*[]Manga, error) {
 		return nil, ErrPageNotFound
 	}
 
-	return &tmp, nil
+	var wg sync.WaitGroup
+
+	mgs := []Manga{}
+
+	for _, mg := range tmp {
+		wg.Add(1)
+
+		go func(m Manga, c2 *colly.Collector) {
+			defer wg.Done()
+
+			createAuthor(&m, c2)
+			mgs = append(mgs, m)
+
+		}(mg, cloneCrawler())
+	}
+
+	wg.Wait()
+
+	return &mgs, nil
 }
 
 func (s *Searcher) PickManga(id string) (*Manga, error) {
 	initCrawler()
+	defer deleteCrawler()
 
 	m := Manga{
 		ID: id,
@@ -69,6 +105,7 @@ func (s *Searcher) PickManga(id string) (*Manga, error) {
 
 func (s *Searcher) ReadMangaChapter(mangaId, chapterId string) (*[]Page, error) {
 	initCrawler()
+	defer deleteCrawler()
 
 	ch := Chapter{
 		ID:      chapterId,
@@ -86,22 +123,37 @@ func (s *Searcher) ReadMangaChapter(mangaId, chapterId string) (*[]Page, error) 
 
 func (s *Searcher) PickAuthor(authorId string) (*[]Manga, error) {
 	initCrawler()
+	defer deleteCrawler()
 
 	a := Author{
 		ID: authorId,
 	}
-
 	a.getMangaListByAuthorID()
 
 	if len(a.Mangas) == 0 {
 		return nil, ErrPageNotFound
 	}
 
+	var wg sync.WaitGroup
+
+	for i, mg := range a.Mangas {
+		wg.Add(1)
+		go func(m Manga, index int, c2 *colly.Collector) {
+			defer wg.Done()
+
+			createAuthor(&m, c2)
+			a.Mangas[index] = m
+		}(mg, i, cloneCrawler())
+	}
+
+	wg.Wait()
+
 	return &a.Mangas, nil
 }
 
 func (s *Searcher) PickGenre(genreId string) (*[]Manga, error) {
 	initCrawler()
+	defer deleteCrawler()
 
 	g := Genre{
 		ID: genreId,
@@ -118,6 +170,7 @@ func (s *Searcher) PickGenre(genreId string) (*[]Manga, error) {
 
 func (s *Searcher) SearchLatestUpdatedManga() (*[]Manga, error) {
 	initCrawler()
+	defer deleteCrawler()
 
 	tmp := getLatestUpdatedManga()
 

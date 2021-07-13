@@ -28,6 +28,7 @@ func createPages(url string) []Page {
 	})
 
 	c.Visit(url)
+	c.Wait()
 
 	return pgs
 }

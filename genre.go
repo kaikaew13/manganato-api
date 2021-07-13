@@ -44,6 +44,7 @@ func (g *Genre) getMangaListByGenreID() {
 	})
 
 	c.Visit(searchMangaByGenreURL + g.ID)
+	c.Wait()
 }
 
 func (g *Genre) getID(url string) {

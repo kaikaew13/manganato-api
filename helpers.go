@@ -20,17 +20,17 @@ func getMangaListHelper(url string) []Manga {
 	mgs := []Manga{}
 
 	c.OnHTML(".search-story-item", func(h *colly.HTMLElement) {
+
 		m := Manga{}
 
 		m.getID(h.ChildAttr("a.item-img", "href"))
 		m.Name = h.ChildText(".item-right a.item-title")
 		m.Updated = h.ChildText(".item-right span.item-author+span")
 
-		createAuthor(&m)
-
-		h.Request.Visit(specificMangaURL + m.ID)
-
 		mgs = append(mgs, m)
+
+		// c.Visit(specificMangaURL + m.ID)
+
 	})
 
 	c.OnError(func(r *colly.Response, e error) {
@@ -38,6 +38,7 @@ func getMangaListHelper(url string) []Manga {
 	})
 
 	c.Visit(url)
+	c.Wait()
 
 	return mgs
 }

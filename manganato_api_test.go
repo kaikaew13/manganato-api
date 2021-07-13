@@ -1,6 +1,7 @@
 package manganatoapi
 
 import (
+	"fmt"
 	"testing"
 )
 
@@ -9,146 +10,161 @@ const id string = "dn980422"
 // testing main apis
 
 func TestSearchManga(t *testing.T) {
-	s := NewSearcher()
+	fmt.Println("on TestSearchManga")
+	for i := 0; i < 5; i++ {
+		s := NewSearcher()
 
-	mangaName := "chainsaw man"
+		mangaName := "chainsaw man"
 
-	mgs, err := s.SearchManga(mangaName)
-	if err != nil {
-		t.Error("not expect to have error")
+		mgs, err := s.SearchManga(mangaName)
+		if err != nil {
+			t.Error("not expect to have error")
+		}
+
+		want := struct {
+			Length int
+			Name   string
+			Author string
+		}{
+			Length: 1,
+			Name:   "Chainsaw Man",
+			Author: "Tatsuki Fujimoto",
+		}
+
+		compareMangasHelper(t, len(*mgs), want.Length)
+		compareNameHelper(t, (*mgs)[0].Name, want.Name)
+		compareAuthorHelper(t, (*mgs)[0].Author.Name, want.Author)
 	}
-
-	want := struct {
-		Length int
-		Name   string
-		Author string
-	}{
-		Length: 1,
-		Name:   "Chainsaw Man",
-		Author: "Tatsuki Fujimoto",
-	}
-
-	compareMangasHelper(t, len(*mgs), want.Length)
-	compareNameHelper(t, (*mgs)[0].Name, want.Name)
-	compareAuthorHelper(t, (*mgs)[0].Author.Name, want.Author)
 }
 
 func TestPickManga(t *testing.T) {
-	s := NewSearcher()
+	fmt.Println("on TestPickManga")
+	for i := 0; i < 5; i++ {
+		s := NewSearcher()
 
-	_, err := s.PickManga(id)
-	if err != nil {
-		t.Error("not expect to have error")
+		_, err := s.PickManga(id)
+		if err != nil {
+			t.Error("not expect to have error")
+		}
+
+		m, err := s.PickManga(id)
+		if err != nil {
+			t.Error("not expect to have error 2")
+		}
+
+		want := struct {
+			Name         string
+			Author       string
+			Alternatives string
+			Length       int
+			MangaID      string
+		}{
+			Name:         "Chainsaw Man",
+			Author:       "Tatsuki Fujimoto",
+			Alternatives: "Chainsawman, チェンソーマン",
+			Length:       97,
+			MangaID:      id,
+		}
+
+		compareNameHelper(t, m.Name, want.Name)
+		compareAuthorHelper(t, m.Author.Name, want.Author)
+		compareAlternativesHelper(t, m.Alternatives, want.Alternatives)
+		compareChaptersHelper(t, m.Chapters, struct {
+			Length  int
+			MangaID string
+		}{
+			Length:  want.Length,
+			MangaID: want.MangaID,
+		})
 	}
-
-	m, err := s.PickManga(id)
-	if err != nil {
-		t.Error("Bruh...")
-	}
-
-	want := struct {
-		Name         string
-		Author       string
-		Alternatives string
-		Length       int
-		MangaID      string
-	}{
-		Name:         "Chainsaw Man",
-		Author:       "Tatsuki Fujimoto",
-		Alternatives: "Chainsawman, チェンソーマン",
-		Length:       97,
-		MangaID:      id,
-	}
-
-	compareNameHelper(t, m.Name, want.Name)
-	compareAuthorHelper(t, m.Author.Name, want.Author)
-	compareAlternativesHelper(t, m.Alternatives, want.Alternatives)
-	compareChaptersHelper(t, m.Chapters, struct {
-		Length  int
-		MangaID string
-	}{
-		Length:  want.Length,
-		MangaID: want.MangaID,
-	})
 }
 
 func TestReadMangaChapter(t *testing.T) {
-	s := NewSearcher()
+	fmt.Println("on TestReadMangaChapter")
+	for i := 0; i < 5; i++ {
+		s := NewSearcher()
 
-	pgs, err := s.ReadMangaChapter(id, "97")
-	if err != nil {
-		t.Error("not expect to have error")
+		pgs, err := s.ReadMangaChapter(id, "97")
+		if err != nil {
+			t.Error("not expect to have error")
+		}
+
+		want := struct {
+			Length       int
+			FirstPageURL string
+		}{
+			Length:       23,
+			FirstPageURL: "https://s51.mkklcdnv6tempv2.com/mangakakalot/i2/ix917953/chapter_97_love_love_chainsaw/1.jpg",
+		}
+		comparePagesHelper(t, *pgs, want)
 	}
-
-	want := struct {
-		Length       int
-		FirstPageURL string
-	}{
-		Length:       23,
-		FirstPageURL: "https://s51.mkklcdnv6tempv2.com/mangakakalot/i2/ix917953/chapter_97_love_love_chainsaw/1.jpg",
-	}
-
-	comparePagesHelper(t, *pgs, want)
 }
 
 func TestSearchMangaByAuthor(t *testing.T) {
-	s := NewSearcher()
+	fmt.Println("on TestSearchMangaByAuthor")
+	for i := 0; i < 5; i++ {
+		s := NewSearcher()
 
-	mgs, err := s.PickAuthor("fHx0YXRzdWtpX2Z1amltb3Rv")
-	if err != nil {
-		t.Error("not expect to have error")
+		mgs, err := s.PickAuthor("fHx0YXRzdWtpX2Z1amltb3Rv")
+		if err != nil {
+			t.Error("not expect to have error")
+		}
+
+		want := struct {
+			Length int
+			Author string
+		}{
+			Length: 7,
+			Author: "Fujimoto Tatsuki",
+		}
+
+		compareMangasHelper(t, len(*mgs), want.Length)
+		compareAuthorHelper(t, (*mgs)[1].Author.Name, want.Author)
 	}
-
-	want := struct {
-		Length int
-		Name   string
-		Author string
-	}{
-		Length: 7,
-		Name:   "Fire Punch",
-		Author: "Fujimoto Tatsuki",
-	}
-
-	compareMangasHelper(t, len(*mgs), want.Length)
-	compareNameHelper(t, (*mgs)[1].Name, want.Name)
-	compareAuthorHelper(t, (*mgs)[1].Author.Name, want.Author)
 }
 
 func TestSearchMangaByGenre(t *testing.T) {
-	s := NewSearcher()
+	fmt.Println("on TestSearchMangaByGenre")
+	for i := 0; i < 5; i++ {
+		s := NewSearcher()
 
-	mgs, err := s.PickGenre("2")
-	if err != nil {
-		t.Error("not expect to have error")
+		mgs, err := s.PickGenre("2")
+		if err != nil {
+			t.Error("not expect to have error")
+		}
+
+		want := struct {
+			Length int
+		}{
+			Length: 24,
+		}
+
+		compareMangasHelper(t, len(*mgs), want.Length)
 	}
-
-	want := struct {
-		Length int
-	}{
-		Length: 24,
-	}
-
-	compareMangasHelper(t, len(*mgs), want.Length)
 }
 
 func TestSearchTopManga(t *testing.T) {
-	s := NewSearcher()
+	fmt.Println("on TestSearchTopManga")
+	for i := 0; i < 5; i++ {
+		s := NewSearcher()
 
-	mgs, err := s.SearchLatestUpdatedManga()
-	if err != nil {
-		t.Errorf("not expect to have error: %s", err.Error())
+		mgs, err := s.SearchLatestUpdatedManga()
+		if err != nil {
+			t.Errorf("not expect to have error: %s", err.Error())
+		}
+
+		want := struct {
+			Length int
+		}{
+			Length: 56,
+		}
+
+		compareMangasHelper(t, len(*mgs), want.Length)
 	}
-
-	want := struct {
-		Length int
-	}{
-		Length: 56,
-	}
-
-	compareMangasHelper(t, len(*mgs), want.Length)
 }
 
 func TestNotFound(t *testing.T) {
+	fmt.Println("on TestNotFound")
 	s := NewSearcher()
 
 	_, err := s.SearchManga(" asdlfjas j laja j")
@@ -176,10 +192,10 @@ func TestNotFound(t *testing.T) {
 
 	_, err = s.PickGenre("abc")
 	notFoundHelper(t, err)
-
 }
 
 func TestIsSearchable(t *testing.T) {
+	fmt.Println("on TestIsSearchable")
 	s := NewSearcher()
 
 	got := s.IsSearchable(1)
@@ -198,6 +214,7 @@ func TestIsSearchable(t *testing.T) {
 //
 
 func TestGetChapterURL(t *testing.T) {
+	fmt.Println("on TestGetChapterURL")
 	ch := Chapter{
 		ID:      "97",
 		MangaID: id,
@@ -211,9 +228,14 @@ func TestGetChapterURL(t *testing.T) {
 }
 
 func TestCreatePages(t *testing.T) {
-	NewSearcher()
+	fmt.Println("on TestCreatePages")
+	initCrawler()
+	defer deleteCrawler()
 
 	pgs := createPages("https://readmanganato.com/manga-dn980422/chapter-97")
+	if len(pgs) != 23 {
+		t.Error("suppose to have 23 pages, got ", len(pgs))
+	}
 
 	want := struct {
 		Length       int
