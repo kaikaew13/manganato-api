@@ -78,8 +78,8 @@ func (m *Manga) getMangaByID() {
 		m.getMangaDescription(h.Text)
 	})
 
-	createGenreList(m)
-	createChapterList(m)
+	createGenreList(m, c)
+	createChapterList(m, c)
 	createAuthor(m, c)
 
 	c.OnError(func(r *colly.Response, e error) {

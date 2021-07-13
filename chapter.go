@@ -15,9 +15,9 @@ type Chapter struct {
 	Pages       []Page
 }
 
-func createChapterList(m *Manga) {
+func createChapterList(m *Manga, c2 *colly.Collector) {
 
-	c.OnHTML(".row-content-chapter li.a-h", func(h *colly.HTMLElement) {
+	c2.OnHTML(".row-content-chapter li.a-h", func(h *colly.HTMLElement) {
 		ch := Chapter{}
 
 		ch.getID(h.ChildAttr("a.chapter-name", "href"))

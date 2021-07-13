@@ -12,9 +12,9 @@ type Genre struct {
 	Mangas    []Manga
 }
 
-func createGenreList(m *Manga) {
+func createGenreList(m *Manga, c2 *colly.Collector) {
 
-	c.OnHTML("tr:nth-child(4) .table-value a.a-h", func(h *colly.HTMLElement) {
+	c2.OnHTML("tr:nth-child(4) .table-value a.a-h", func(h *colly.HTMLElement) {
 		g := Genre{}
 
 		g.getID(h.Attr("href"))
