@@ -65,7 +65,8 @@ func NewSearcher() Searcher {
 }
 
 // receives name of a manga user wants to search for
-// and returns a list of mangas that match the name
+// and returns a list of mangas that match the name.
+// Each manga will have ID, Name, Author and Updated fields
 //
 // https://manganato.com/search/story/<name>
 func (s *Searcher) SearchManga(name string) (*[]Manga, error) {
@@ -100,7 +101,8 @@ func (s *Searcher) SearchManga(name string) (*[]Manga, error) {
 }
 
 // receives the id of the specific manga
-// then returns that manga if found
+// then returns that manga if found.
+// Every fields in Manga struct will be setted
 //
 // https://readmanganato.com/manga-<id>
 func (s *Searcher) PickManga(id string) (*Manga, error) {
@@ -122,7 +124,8 @@ func (s *Searcher) PickManga(id string) (*Manga, error) {
 }
 
 // receives the manga id and chapter id
-// then returns pages of that specific chapter
+// then returns pages of that specific chapter.
+// Each page will have ID and ImageURL setted
 //
 // https://readmanganato.com/manga-<mangaId>/chapter-<chapterId>
 func (s *Searcher) ReadMangaChapter(mangaId, chapterId string) (*[]Page, error) {
@@ -143,7 +146,8 @@ func (s *Searcher) ReadMangaChapter(mangaId, chapterId string) (*[]Page, error) 
 	return &ch.Pages, nil
 }
 
-// receives the id of the author then returns a list of mangas by him/her
+// receives the id of the author then returns a list of mangas by him/her.
+// Each manga will have ID, Name, Author and Updated fields
 //
 // https://manganato.com/author/story/<authorId>
 func (s *Searcher) PickAuthor(authorId string) (*[]Manga, error) {
@@ -176,7 +180,9 @@ func (s *Searcher) PickAuthor(authorId string) (*[]Manga, error) {
 	return &a.Mangas, nil
 }
 
-// receives genre id then returns a list of mangas with that genre
+// receives genre id then returns a list of mangas with that genre.
+// Each manga will have ID, Name, Author(Name only), Updated,
+//  Views and Description fields
 //
 // https://manganato.com/genre-<genreId>
 func (s *Searcher) PickGenre(genreId string) (*[]Manga, error) {
@@ -197,7 +203,8 @@ func (s *Searcher) PickGenre(genreId string) (*[]Manga, error) {
 }
 
 // returns list of latest updated mangas
-// from the first page of https://manganato.com
+// from the first page of https://manganato.com.
+// Each manga will have ID, Name and Author(Name only) fields
 func (s *Searcher) SearchLatestUpdatedManga() (*[]Manga, error) {
 	initCrawler()
 	defer deleteCrawler()
