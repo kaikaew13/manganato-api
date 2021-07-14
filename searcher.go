@@ -13,10 +13,12 @@ var ErrPageNotFound = errors.New("this page does not exist or has been deleted")
 
 var c *colly.Collector
 
+// provides methods for fetching data from https://manganato.com
 type Searcher struct {
 	MethodsDescription map[string]string
 }
 
+//  any struct types with ID implement Searchable
 type Searchable interface {
 	getID(string)
 }
@@ -45,6 +47,7 @@ func deleteCrawler() {
 	c = nil
 }
 
+// returns a new Searcher
 func NewSearcher() Searcher {
 	methodDescription := map[string]string{
 		"SearchManga":              "receives name of a manga user wants to search for and returns a list of mangas that match the name",
