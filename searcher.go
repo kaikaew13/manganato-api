@@ -45,9 +45,15 @@ func deleteCrawler() {
 }
 
 func NewSearcher() Searcher {
-
-	// description of each methods are to be added
-	methodDescription := make(map[string]string)
+	methodDescription := map[string]string{
+		"SearchManga":              "SearchManga receives name of a manga user wants to search for and returns a list of mangas that match the name",
+		"PickManga":                "PickManga receives the id of the specific manga then returns that manga if found",
+		"ReadMangaChapter":         "ReadMangaChapter receives the manga id and chapter id and returns pages of that specific chapter",
+		"PickAuthor":               "PickAuthor receives the id of the author then returns a list of mangas by him/her",
+		"PickGenre":                "PickGenre receives genre id and returns a list of mangas with that genre",
+		"SearchLatestUpdatedManga": "SearchLatestUpdatedManga returns list of latest updated mangas from the first page of manganato.com",
+		"IsSearchable":             "IsSearchable returns whether the struct type implements Searchable interface",
+	}
 
 	return Searcher{
 		MethodsDescription: methodDescription,

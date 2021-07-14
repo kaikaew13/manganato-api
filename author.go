@@ -17,7 +17,6 @@ func createAuthor(m *Manga, c2 *colly.Collector) {
 
 		a.getID(h.ChildAttr("a", "href"))
 		a.Name = h.ChildText("td.table-value")
-		// fmt.Println("inside author: ", m.ID)
 		m.Author = a
 	})
 

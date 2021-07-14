@@ -28,9 +28,6 @@ func getMangaListHelper(url string) []Manga {
 		m.Updated = h.ChildText(".item-right span.item-author+span")
 
 		mgs = append(mgs, m)
-
-		// c.Visit(specificMangaURL + m.ID)
-
 	})
 
 	c.OnError(func(r *colly.Response, e error) {
