@@ -8,6 +8,7 @@ import (
 	"github.com/gocolly/colly/extensions"
 )
 
+// throws when no results are found
 var ErrPageNotFound = errors.New("this page does not exist or has been deleted")
 
 var c *colly.Collector
@@ -46,13 +47,13 @@ func deleteCrawler() {
 
 func NewSearcher() Searcher {
 	methodDescription := map[string]string{
-		"SearchManga":              "SearchManga receives name of a manga user wants to search for and returns a list of mangas that match the name",
-		"PickManga":                "PickManga receives the id of the specific manga then returns that manga if found",
-		"ReadMangaChapter":         "ReadMangaChapter receives the manga id and chapter id and returns pages of that specific chapter",
-		"PickAuthor":               "PickAuthor receives the id of the author then returns a list of mangas by him/her",
-		"PickGenre":                "PickGenre receives genre id and returns a list of mangas with that genre",
-		"SearchLatestUpdatedManga": "SearchLatestUpdatedManga returns list of latest updated mangas from the first page of manganato.com",
-		"IsSearchable":             "IsSearchable returns whether the struct type implements Searchable interface",
+		"SearchManga":              "receives name of a manga user wants to search for and returns a list of mangas that match the name",
+		"PickManga":                "receives the id of the specific manga then returns that manga if found",
+		"ReadMangaChapter":         "receives the manga id and chapter id then returns pages of that specific chapter",
+		"PickAuthor":               "receives the id of the author then returns a list of mangas by him/her",
+		"PickGenre":                "receives genre id then returns a list of mangas with that genre",
+		"SearchLatestUpdatedManga": "returns list of latest updated mangas from the first page of https://manganato.com",
+		"IsSearchable":             "returns whether the struct type implements Searchable interface",
 	}
 
 	return Searcher{
@@ -60,6 +61,10 @@ func NewSearcher() Searcher {
 	}
 }
 
+// receives name of a manga user wants to search for
+// and returns a list of mangas that match the name
+//
+// https://manganato.com/search/story/<name>
 func (s *Searcher) SearchManga(name string) (*[]Manga, error) {
 	initCrawler()
 	defer deleteCrawler()
@@ -91,6 +96,10 @@ func (s *Searcher) SearchManga(name string) (*[]Manga, error) {
 	return &mgs, nil
 }
 
+// receives the id of the specific manga
+// then returns that manga if found
+//
+// https://readmanganato.com/manga-<id>
 func (s *Searcher) PickManga(id string) (*Manga, error) {
 	initCrawler()
 	defer deleteCrawler()
@@ -109,6 +118,10 @@ func (s *Searcher) PickManga(id string) (*Manga, error) {
 	return &m, nil
 }
 
+// receives the manga id and chapter id
+// then returns pages of that specific chapter
+//
+// https://readmanganato.com/manga-<mangaId>/chapter-<chapterId>
 func (s *Searcher) ReadMangaChapter(mangaId, chapterId string) (*[]Page, error) {
 	initCrawler()
 	defer deleteCrawler()
@@ -127,6 +140,9 @@ func (s *Searcher) ReadMangaChapter(mangaId, chapterId string) (*[]Page, error) 
 	return &ch.Pages, nil
 }
 
+// receives the id of the author then returns a list of mangas by him/her
+//
+// https://manganato.com/author/story/<authorId>
 func (s *Searcher) PickAuthor(authorId string) (*[]Manga, error) {
 	initCrawler()
 	defer deleteCrawler()
@@ -157,6 +173,9 @@ func (s *Searcher) PickAuthor(authorId string) (*[]Manga, error) {
 	return &a.Mangas, nil
 }
 
+// receives genre id then returns a list of mangas with that genre
+//
+// https://manganato.com/genre-<genreId>
 func (s *Searcher) PickGenre(genreId string) (*[]Manga, error) {
 	initCrawler()
 	defer deleteCrawler()
@@ -174,6 +193,8 @@ func (s *Searcher) PickGenre(genreId string) (*[]Manga, error) {
 	return &g.Mangas, nil
 }
 
+// returns list of latest updated mangas
+// from the first page of https://manganato.com
 func (s *Searcher) SearchLatestUpdatedManga() (*[]Manga, error) {
 	initCrawler()
 	defer deleteCrawler()
@@ -187,6 +208,7 @@ func (s *Searcher) SearchLatestUpdatedManga() (*[]Manga, error) {
 	return &tmp, nil
 }
 
+// returns whether the struct type implements Searchable interface
 func (s *Searcher) IsSearchable(any interface{}) bool {
 	switch any.(type) {
 	case Searchable:

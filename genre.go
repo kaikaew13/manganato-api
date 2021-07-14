@@ -12,6 +12,7 @@ type Genre struct {
 	Mangas    []Manga
 }
 
+// gets every genres for a specific manga
 func createGenreList(m *Manga, c2 *colly.Collector) {
 
 	c2.OnHTML("tr:nth-child(4) .table-value a.a-h", func(h *colly.HTMLElement) {
@@ -24,11 +25,11 @@ func createGenreList(m *Manga, c2 *colly.Collector) {
 	})
 }
 
+// helper of PickGenre
 func (g *Genre) getMangaListByGenreID() {
 
 	c.OnHTML(".content-genres-item", func(h *colly.HTMLElement) {
 		m := Manga{}
-
 		m.getID(h.ChildAttr("h3 a.genres-item-name", "href"))
 		m.Name = h.ChildText("h3 a.genres-item-name")
 		m.Views = h.ChildText("p.genres-item-view-time span.genres-item-view")

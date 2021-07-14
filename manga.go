@@ -27,6 +27,7 @@ func getMangaList(name string) []Manga {
 	return getMangaListHelper(url)
 }
 
+// helper of SearchLatestUpdatedManga,
 func getLatestUpdatedManga() []Manga {
 	mgs := []Manga{}
 
@@ -65,11 +66,10 @@ func (m *Manga) getMangaByID() {
 	})
 
 	c.OnHTML(".story-info-right-extent", func(h *colly.HTMLElement) {
-
 		updated := h.ChildText("p:nth-child(1) .stre-value")
 		views := h.ChildText("p:nth-child(2) .stre-value")
-		m.getMangaRating(h.ChildText("em#rate_row_cmd"))
 
+		m.getMangaRating(h.ChildText("em#rate_row_cmd"))
 		m.Updated = updated
 		m.Views = views
 	})
@@ -90,13 +90,14 @@ func (m *Manga) getMangaByID() {
 	c.Wait()
 }
 
+// formats manga description
 func (m *Manga) getMangaDescription(desc string) {
 	pref := "Description :\n"
-
 	desc = strings.Trim(desc, "\n")
 	m.Description = strings.TrimPrefix(desc, pref)
 }
 
+// formats manga rating
 func (m *Manga) getMangaRating(rating string) {
 	tmp := (strings.Fields(rating))[3:]
 	m.Rating = strings.Join(tmp, " ")

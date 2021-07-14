@@ -11,12 +11,12 @@ type Page struct {
 	ImageURL string
 }
 
+// use colly to scrape each page's info
 func createPages(url string) []Page {
 	pgs := []Page{}
 
 	c.OnHTML(".container-chapter-reader img", func(h *colly.HTMLElement) {
 		p := Page{}
-
 		p.ImageURL = h.Attr("src")
 		p.getID(p.ImageURL)
 

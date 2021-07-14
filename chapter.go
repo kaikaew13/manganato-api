@@ -15,11 +15,11 @@ type Chapter struct {
 	Pages       []Page
 }
 
+// gets every chapter info for a specific manga
 func createChapterList(m *Manga, c2 *colly.Collector) {
 
 	c2.OnHTML(".row-content-chapter li.a-h", func(h *colly.HTMLElement) {
 		ch := Chapter{}
-
 		ch.getID(h.ChildAttr("a.chapter-name", "href"))
 		ch.MangaID = m.ID
 		ch.ChapterName = h.ChildText("a.chapter-name")
@@ -31,6 +31,7 @@ func createChapterList(m *Manga, c2 *colly.Collector) {
 	})
 }
 
+// helper of ReadMangaChapter
 func (ch *Chapter) getChapterByID() {
 	ch.Pages = createPages(ch.getChapterURL())
 }
