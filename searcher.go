@@ -8,10 +8,13 @@ import (
 	"github.com/gocolly/colly/extensions"
 )
 
-// throws when no results are found
-var ErrPageNotFound = errors.New("this page does not exist or has been deleted")
+var (
 
-var c *colly.Collector
+	// throws when no results are found
+	ErrPageNotFound = errors.New("this page does not exist or has been deleted")
+	c               *colly.Collector
+	wg              sync.WaitGroup
+)
 
 // provides methods for fetching data from https://manganato.com
 type Searcher struct {
@@ -78,8 +81,6 @@ func (s *Searcher) SearchManga(name string) (*[]Manga, error) {
 	if len(tmp) == 0 {
 		return nil, ErrPageNotFound
 	}
-
-	var wg sync.WaitGroup
 
 	mgs := []Manga{}
 
@@ -162,8 +163,6 @@ func (s *Searcher) PickAuthor(authorId string) (*[]Manga, error) {
 	if len(a.Mangas) == 0 {
 		return nil, ErrPageNotFound
 	}
-
-	var wg sync.WaitGroup
 
 	for i, mg := range a.Mangas {
 		wg.Add(1)
