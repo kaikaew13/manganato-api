@@ -56,3 +56,7 @@ Updated : Dec 14,2020 - 04:53
 4. search mangas by author id
 5. search mangas by genre id
 6. get list of the latest updated mangas (manganato's home page)
+
+## credits
+
+- [gocolly](https://github.com/gocolly/colly) for web scraper
