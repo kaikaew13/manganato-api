@@ -18,7 +18,7 @@ func TestSearchManga(t *testing.T) {
 
 		mgs, err := s.SearchManga(mangaName)
 		if err != nil {
-			t.Error("not expect to have error")
+			t.Fatal("not expect to have error")
 		}
 
 		want := struct {
@@ -44,12 +44,12 @@ func TestPickManga(t *testing.T) {
 
 		_, err := s.PickManga(id)
 		if err != nil {
-			t.Error("not expect to have error")
+			t.Fatal("not expect to have error")
 		}
 
 		m, err := s.PickManga(id)
 		if err != nil {
-			t.Error("not expect to have error 2")
+			t.Fatal("not expect to have error 2")
 		}
 
 		want := struct {
@@ -86,7 +86,7 @@ func TestReadMangaChapter(t *testing.T) {
 
 		pgs, err := s.ReadMangaChapter(id, "97")
 		if err != nil {
-			t.Error("not expect to have error")
+			t.Fatal("not expect to have error")
 		}
 
 		want := struct {
@@ -107,7 +107,7 @@ func TestSearchMangaByAuthor(t *testing.T) {
 
 		mgs, err := s.PickAuthor("fHx0YXRzdWtpX2Z1amltb3Rv")
 		if err != nil {
-			t.Error("not expect to have error")
+			t.Fatal("not expect to have error")
 		}
 
 		want := struct {
@@ -130,7 +130,7 @@ func TestSearchMangaByGenre(t *testing.T) {
 
 		mgs, err := s.PickGenre("2")
 		if err != nil {
-			t.Error("not expect to have error")
+			t.Fatal("not expect to have error")
 		}
 
 		want := struct {
@@ -150,7 +150,7 @@ func TestSearchTopManga(t *testing.T) {
 
 		mgs, err := s.SearchLatestUpdatedManga()
 		if err != nil {
-			t.Errorf("not expect to have error: %s", err.Error())
+			t.Fatalf("not expect to have error: %s", err.Error())
 		}
 
 		want := struct {
