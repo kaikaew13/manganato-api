@@ -12,7 +12,6 @@ type Author struct {
 
 // gets author info for a specific manga
 func createAuthor(m *Manga, c2 *colly.Collector) {
-
 	c2.OnHTML(".variations-tableInfo tbody tr:nth-child(2)", func(h *colly.HTMLElement) {
 		a := Author{}
 		a.getID(h.ChildAttr("a", "href"))

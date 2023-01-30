@@ -21,7 +21,7 @@ type Searcher struct {
 	MethodsDescription map[string]string
 }
 
-//  any struct types with ID implement Searchable
+// any struct types with ID implement Searchable
 type Searchable interface {
 	getID(string)
 }
@@ -181,7 +181,8 @@ func (s *Searcher) PickAuthor(authorId string) (*[]Manga, error) {
 
 // receives genre id then returns a list of mangas with that genre.
 // Each manga will have ID, Name, Author(Name only), Updated,
-//  Views and Description fields
+//
+//	Views and Description fields
 //
 // https://manganato.com/genre-<genreId>
 func (s *Searcher) PickGenre(genreId string) (*[]Manga, error) {

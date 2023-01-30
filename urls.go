@@ -3,7 +3,7 @@ package manganatoapi
 const (
 	manganatoURL              string = "manganato.com"
 	manganatoURLWithHTTPS            = "https://" + manganatoURL
-	readManganatoURL                 = "read" + manganatoURL
+	readManganatoURL                 = "chap" + manganatoURL
 	readManganatoURLWihtHTTPS        = "https://" + readManganatoURL
 	searchMangaURL                   = manganatoURLWithHTTPS + "/search/story/"
 	specificMangaURL                 = readManganatoURLWihtHTTPS + "/manga-"
